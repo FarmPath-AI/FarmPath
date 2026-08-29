@@ -3,89 +3,157 @@ const SUPABASE_URL = "https://gqdclkxaxukvswiozgun.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY =
 "sb_publishable_ZEBgVQwsdSYjjMq2F1WKZw_TD_fEFVC";
 
-console.log("AUTH.JS LOADED");
-
-if (!window.supabase) {
-alert("ERROR: Supabase library did not load.");
-} else {
-
 const supabaseClient = window.supabase.createClient(
 SUPABASE_URL,
 SUPABASE_PUBLISHABLE_KEY
 );
 
-console.log("Supabase client created successfully");
+console.log("AgroGuide AI auth loaded");
 
-const googleLoginButton =
-document.getElementById("googleLoginButton");
+const tabs = document.querySelectorAll(".auth-tab");
+const loginForm = document.getElementById("loginForm");
+const signupForm = document.getElementById("signupForm");
+const authMessage = document.getElementById("authMessage");
+const googleLoginButton = document.getElementById("googleLoginButton");
 
-if (!googleLoginButton) {
+function showMessage(message, type = "error") {
+authMessage.textContent = message;
+authMessage.className = `message ${type}`;
+}
+
+function clearMessage() {
+authMessage.textContent = "";
+authMessage.className = "message";
+}
+
+/* SWITCH BETWEEN LOGIN AND SIGNUP */
+
+tabs.forEach((tab) => {
+tab.addEventListener("click", () => {
+clearMessage();
 
 ```
-alert("ERROR: Google button was not found.");
-```
+tabs.forEach((item) => {
+  item.classList.remove("active");
+});
 
+tab.classList.add("active");
+
+if (tab.dataset.form === "login") {
+  loginForm.classList.add("active");
+  signupForm.classList.remove("active");
 } else {
-
+  signupForm.classList.add("active");
+  loginForm.classList.remove("active");
+}
 ```
-console.log("Google button found successfully");
 
+});
+});
 
-googleLoginButton.addEventListener(
-  "click",
-  async function () {
+/* LOGIN */
 
-    console.log("GOOGLE BUTTON CLICKED");
+loginForm.addEventListener("submit", async (event) => {
+event.preventDefault();
 
-    alert("Google button is working. Connecting to Google...");
+clearMessage();
 
+const email = document.getElementById("loginEmail").value.trim();
+const password = document.getElementById("loginPassword").value;
 
-    try {
+const button = loginForm.querySelector('button[type="submit"]');
 
-      const { data, error } =
-        await supabaseClient.auth.signInWithOAuth({
+button.disabled = true;
+button.textContent = "Logging in...";
 
-          provider: "google",
+const { error } = await supabaseClient.auth.signInWithPassword({
+email,
+password
+});
 
-          options: {
+if (error) {
+showMessage(error.message);
+button.disabled = false;
+button.textContent = "Log In →";
+return;
+}
 
-            redirectTo:
-              "https://farmpath-ai.github.io/AgroGuide-AI/dashboard.html"
+window.location.href = "dashboard.html";
+});
 
-          }
+/* SIGN UP */
 
-        });
+signupForm.addEventListener("submit", async (event) => {
+event.preventDefault();
 
+clearMessage();
 
-      console.log("OAuth response:", data);
+const fullName = document.getElementById("signupName").value.trim();
+const email = document.getElementById("signupEmail").value.trim();
+const password = document.getElementById("signupPassword").value;
 
+const button = signupForm.querySelector('button[type="submit"]');
 
-      if (error) {
+button.disabled = true;
+button.textContent = "Creating account...";
 
-        console.error("OAuth error:", error);
+const { data, error } = await supabaseClient.auth.signUp({
+email,
+password,
+options: {
+data: {
+full_name: fullName
+}
+}
+});
 
-        alert(
-          "Google login error: " +
-          error.message
-        );
+if (error) {
+showMessage(error.message);
+button.disabled = false;
+button.textContent = "Create My Account →";
+return;
+}
 
-      }
-
-    } catch (error) {
-
-      console.error("Unexpected error:", error);
-
-      alert(
-        "Unexpected error: " +
-        error.message
-      );
-
-    }
-
-  }
+if (data.session) {
+window.location.href = "dashboard.html";
+} else {
+showMessage(
+"Account created successfully. You can now log in.",
+"success"
 );
+
+```
+button.disabled = false;
+button.textContent = "Create My Account →";
 ```
 
 }
+});
+
+/* GOOGLE LOGIN */
+
+googleLoginButton.addEventListener("click", async () => {
+clearMessage();
+
+googleLoginButton.disabled = true;
+googleLoginButton.textContent = "Connecting to Google...";
+
+const { error } = await supabaseClient.auth.signInWithOAuth({
+provider: "google",
+options: {
+redirectTo:
+"https://farmpath-ai.github.io/AgroGuide-AI/dashboard.html"
+}
+});
+
+if (error) {
+showMessage(error.message);
+
+```
+googleLoginButton.disabled = false;
+googleLoginButton.innerHTML =
+  '<span class="google-g">G</span> Continue with Google';
+```
 
 }
+});
