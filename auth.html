@@ -1,1 +1,424 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Account | AgroGuide AI</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+
+    body {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 30px;
+      background:
+        radial-gradient(circle at top left, rgba(184,227,74,.25), transparent 35%),
+        #f7f6f0;
+    }
+
+    .auth-container {
+      width: 100%;
+      max-width: 1000px;
+      min-height: 600px;
+
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+
+      background: white;
+      border-radius: 28px;
+      overflow: hidden;
+
+      box-shadow: 0 30px 80px rgba(11,61,39,.15);
+    }
+
+    .auth-brand {
+      padding: 55px;
+      color: white;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      background:
+        radial-gradient(circle at top right, rgba(184,227,74,.22), transparent 30%),
+        #0b3d27;
+    }
+
+    .auth-brand .logo {
+      color: white;
+    }
+
+    .auth-brand h1 {
+      font-size: clamp(42px, 5vw, 65px);
+      letter-spacing: -2px;
+    }
+
+    .auth-brand h1 span {
+      color: #b8e34a;
+    }
+
+    .auth-brand p {
+      margin-top: 20px;
+      max-width: 400px;
+      color: rgba(255,255,255,.7);
+    }
+
+    .auth-benefits {
+      display: grid;
+      gap: 14px;
+    }
+
+    .auth-benefits div {
+      padding: 15px;
+      border-radius: 13px;
+      background: rgba(255,255,255,.08);
+      font-size: 14px;
+    }
+
+    .auth-panel {
+      padding: 55px;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .back-home {
+      font-size: 13px;
+      font-weight: 700;
+      color: #167a45;
+      margin-bottom: 35px;
+    }
+
+    .auth-panel h2 {
+      font-size: 36px;
+    }
+
+    .auth-subtitle {
+      color: #68746c;
+      margin-top: 8px;
+      margin-bottom: 28px;
+    }
+
+    .auth-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+
+      background: #f1f4f0;
+      padding: 5px;
+      border-radius: 12px;
+
+      margin-bottom: 25px;
+    }
+
+    .auth-tab {
+      border: none;
+      background: transparent;
+
+      padding: 12px;
+      border-radius: 9px;
+
+      font-family: inherit;
+      font-weight: 700;
+
+      cursor: pointer;
+    }
+
+    .auth-tab.active {
+      background: white;
+      color: #167a45;
+      box-shadow: 0 4px 10px rgba(0,0,0,.05);
+    }
+
+    .auth-form {
+      display: none;
+    }
+
+    .auth-form.active {
+      display: block;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 7px;
+
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+
+      border: 1px solid #dce4dc;
+      border-radius: 10px;
+
+      outline: none;
+
+      font-family: inherit;
+      font-size: 14px;
+    }
+
+    input:focus {
+      border-color: #167a45;
+      box-shadow: 0 0 0 3px rgba(22,122,69,.1);
+    }
+
+    .submit-button {
+      width: 100%;
+      margin-top: 8px;
+
+      padding: 15px;
+
+      border: none;
+      border-radius: 11px;
+
+      background: #0b3d27;
+      color: white;
+
+      font-family: inherit;
+      font-weight: 800;
+
+      cursor: pointer;
+    }
+
+    .submit-button:hover {
+      opacity: .92;
+    }
+
+    .submit-button:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+    }
+
+    .message {
+      display: none;
+
+      margin-bottom: 18px;
+      padding: 12px;
+
+      border-radius: 10px;
+      font-size: 13px;
+    }
+
+    .message.error {
+      display: block;
+      background: #fff0f0;
+      color: #a12626;
+    }
+
+    .message.success {
+      display: block;
+      background: #e9f7ef;
+      color: #167a45;
+    }
+
+    @media (max-width: 800px) {
+
+      .auth-container {
+        grid-template-columns: 1fr;
+      }
+
+      .auth-brand {
+        display: none;
+      }
+
+      .auth-panel {
+        padding: 35px 25px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <div class="auth-container">
+
+```
+<section class="auth-brand">
+
+  <a href="index.html" class="logo">
+    <span class="logo-icon">🌱</span>
+    <span>AgroGuide<span>AI</span></span>
+  </a>
+
+  <div>
+
+    <h1>
+      Your Farm.<br>
+      <span>Smarter.</span>
+    </h1>
+
+    <p>
+      Join AgroGuide AI and receive personalized guidance
+      throughout your farming journey.
+    </p>
+
+  </div>
+
+  <div class="auth-benefits">
+
+    <div>🤖 Your Digital Agronomist</div>
+    <div>📅 Personalized Farm Calendar</div>
+    <div>🌾 Complete Farm Journey</div>
+
+  </div>
+
+</section>
+
+
+<section class="auth-panel">
+
+  <a href="index.html" class="back-home">← Back to home</a>
+
+  <h2>Welcome to AgroGuide</h2>
+
+  <p class="auth-subtitle">
+    Sign in or create your farmer account.
+  </p>
+
+
+  <div class="auth-tabs">
+
+    <button class="auth-tab active" data-form="login">
+      Log In
+    </button>
+
+    <button class="auth-tab" data-form="signup">
+      Create Account
+    </button>
+
+  </div>
+
+
+  <div id="authMessage" class="message"></div>
+
+
+  <!-- LOGIN -->
+
+  <form id="loginForm" class="auth-form active">
+
+    <div class="form-group">
+
+      <label for="loginEmail">Email address</label>
+
+      <input
+        id="loginEmail"
+        type="email"
+        required
+        autocomplete="email"
+        placeholder="you@example.com"
+      >
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label for="loginPassword">Password</label>
+
+      <input
+        id="loginPassword"
+        type="password"
+        required
+        minlength="6"
+        autocomplete="current-password"
+        placeholder="Your password"
+      >
+
+    </div>
+
+
+    <button type="submit" class="submit-button">
+      Log In →
+    </button>
+
+  </form>
+
+
+  <!-- SIGN UP -->
+
+  <form id="signupForm" class="auth-form">
+
+    <div class="form-group">
+
+      <label for="signupName">Full name</label>
+
+      <input
+        id="signupName"
+        type="text"
+        required
+        minlength="2"
+        autocomplete="name"
+        placeholder="Your name"
+      >
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label for="signupEmail">Email address</label>
+
+      <input
+        id="signupEmail"
+        type="email"
+        required
+        autocomplete="email"
+        placeholder="you@example.com"
+      >
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label for="signupPassword">Password</label>
+
+      <input
+        id="signupPassword"
+        type="password"
+        required
+        minlength="6"
+        autocomplete="new-password"
+        placeholder="At least 6 characters"
+      >
+
+    </div>
+
+
+    <button type="submit" class="submit-button">
+      Create My Account →
+    </button>
+
+  </form>
+
+</section>
+```
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script src="auth.js"></script>
+
+</body>
+</html>
 
