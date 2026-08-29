@@ -1,0 +1,7 @@
+document.addEventListener("DOMContentLoaded",()=>{
+ const tabs=document.querySelectorAll(".tab"), forms=document.querySelectorAll(".form"), msg=document.getElementById("message");
+ function show(t,type){msg.textContent=t;msg.className="message "+type}
+ tabs.forEach(t=>t.onclick=()=>{tabs.forEach(x=>x.classList.remove("active"));forms.forEach(x=>x.classList.remove("active"));t.classList.add("active");document.getElementById(t.dataset.target).classList.add("active");msg.className=""});
+ document.getElementById("signupForm").onsubmit=e=>{e.preventDefault();const name=signupName.value.trim(),email=signupEmail.value.trim(),password=signupPassword.value;if(password.length<6)return show("Password must be at least 6 characters.","error");let users=FP.get("farmpath_users",[]);if(users.some(u=>u.email===email))return show("An account with this email already exists. Please log in.","error");users.push({name,email,password});FP.set("farmpath_users",users);FP.set("farmpath_user",{name,email});show("Account created! Opening your FarmPath...","success");setTimeout(()=>location.href="dashboard.html",500)};
+ document.getElementById("loginForm").onsubmit=e=>{e.preventDefault();const email=loginEmail.value.trim(),password=loginPassword.value;let u=FP.get("farmpath_users",[]).find(x=>x.email===email&&x.password===password);if(!u)return show("Incorrect email or password.","error");FP.set("farmpath_user",{name:u.name,email:u.email});show("Welcome back! Opening FarmPath...","success");setTimeout(()=>location.href="dashboard.html",400)};
+});

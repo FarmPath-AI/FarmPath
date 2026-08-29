@@ -1,0 +1,5 @@
+document.addEventListener("DOMContentLoaded",()=>{
+ const list=document.getElementById("farmList");
+ function render(){let farms=FP.farms();list.innerHTML=farms.length?farms.map(f=>`<div class="saved-farm"><div><h3>🌾 ${f.name}</h3><p>${f.crop} · ${f.size} hectares · ${f.state}, ${f.lga}</p></div><button class="delete-btn" data-id="${f.id}">Delete</button></div>`).join(""):`<div class="empty-list">No farms saved yet.</div>`;document.querySelectorAll(".delete-btn").forEach(b=>b.onclick=()=>{let fs=FP.farms().filter(f=>f.id!==b.dataset.id);FP.set("farmpath_farms",fs);FP.set("farmpath_activeFarm",fs[0]?.id||null);render()})}
+ farmForm.onsubmit=e=>{e.preventDefault();let f={id:Date.now().toString(),name:farmNameInput.value.trim(),state:state.value,lga:lga.value.trim(),community:community.value.trim(),crop:crop.value,size:farmSize.value,plantingDate:plantingDate.value,system:farmingSystem.value,soil:soilInfo.value.trim()};let fs=FP.farms();fs.push(f);FP.set("farmpath_farms",fs);FP.set("farmpath_activeFarm",f.id);location.href="dashboard.html"};render();
+});

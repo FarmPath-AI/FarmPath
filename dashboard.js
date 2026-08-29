@@ -1,0 +1,6 @@
+document.addEventListener("DOMContentLoaded",()=>{
+ const u=FP.user(), f=FP.activeFarm(); todayDate.textContent=new Date().toLocaleDateString("en-NG",{weekday:"short",month:"short",day:"numeric"});greeting.textContent=`Good day, ${u?.name?.split(" ")[0]||"Farmer"} 👋`;
+ if(!f)return; emptyFarm.classList.add("hidden");dashboardContent.classList.remove("hidden");farmName.textContent=f.name;farmMeta.textContent=`📍 ${f.state}, ${f.lga} · 🌾 ${f.crop} · 📏 ${f.size} ha`;
+ const priorities=[["🌱","Inspect your crop","Walk through the field and look for unusual damage or stress."],["📅","Review your FarmPath","Check your next planned farming activity."],["📝","Keep your farm records updated","Record important expenses and observations."]];priorityCount.textContent=priorities.length;priorityList.innerHTML=priorities.map(x=>`<div class="priority"><i>${x[0]}</i><div><b>${x[1]}</b><p>${x[2]}</p></div></div>`).join("");
+ progressList.innerHTML=[["Land preparation",100],["Planting & establishment",75],["Crop management",45],["Harvest preparation",15]].map(x=>`<div class="progress-item"><div><span>${x[0]}</span><span>${x[1]}%</span></div><div class="bar"><span style="width:${x[1]}%"></span></div></div>`).join("");
+});
