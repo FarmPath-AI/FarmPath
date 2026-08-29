@@ -8,7 +8,7 @@ SUPABASE_URL,
 SUPABASE_PUBLISHABLE_KEY
 );
 
-console.log("AgroGuide AI auth loaded");
+console.log("AgroGuide AI authentication loaded");
 
 const tabs = document.querySelectorAll(".auth-tab");
 const loginForm = document.getElementById("loginForm");
@@ -25,8 +25,6 @@ function clearMessage() {
 authMessage.textContent = "";
 authMessage.className = "message";
 }
-
-/* SWITCH BETWEEN LOGIN AND SIGNUP */
 
 tabs.forEach((tab) => {
 tab.addEventListener("click", () => {
@@ -51,15 +49,19 @@ if (tab.dataset.form === "login") {
 });
 });
 
-/* LOGIN */
-
 loginForm.addEventListener("submit", async (event) => {
 event.preventDefault();
 
 clearMessage();
 
-const email = document.getElementById("loginEmail").value.trim();
-const password = document.getElementById("loginPassword").value;
+const email = document
+.getElementById("loginEmail")
+.value
+.trim();
+
+const password = document
+.getElementById("loginPassword")
+.value;
 
 const button = loginForm.querySelector('button[type="submit"]');
 
@@ -67,30 +69,42 @@ button.disabled = true;
 button.textContent = "Logging in...";
 
 const { error } = await supabaseClient.auth.signInWithPassword({
-email,
-password
+email: email,
+password: password
 });
 
 if (error) {
 showMessage(error.message);
+
+```
 button.disabled = false;
 button.textContent = "Log In →";
 return;
+```
+
 }
 
 window.location.href = "dashboard.html";
 });
-
-/* SIGN UP */
 
 signupForm.addEventListener("submit", async (event) => {
 event.preventDefault();
 
 clearMessage();
 
-const fullName = document.getElementById("signupName").value.trim();
-const email = document.getElementById("signupEmail").value.trim();
-const password = document.getElementById("signupPassword").value;
+const fullName = document
+.getElementById("signupName")
+.value
+.trim();
+
+const email = document
+.getElementById("signupEmail")
+.value
+.trim();
+
+const password = document
+.getElementById("signupPassword")
+.value;
 
 const button = signupForm.querySelector('button[type="submit"]');
 
@@ -98,8 +112,8 @@ button.disabled = true;
 button.textContent = "Creating account...";
 
 const { data, error } = await supabaseClient.auth.signUp({
-email,
-password,
+email: email,
+password: password,
 options: {
 data: {
 full_name: fullName
@@ -109,16 +123,20 @@ full_name: fullName
 
 if (error) {
 showMessage(error.message);
+
+```
 button.disabled = false;
 button.textContent = "Create My Account →";
 return;
+```
+
 }
 
 if (data.session) {
 window.location.href = "dashboard.html";
 } else {
 showMessage(
-"Account created successfully. You can now log in.",
+"Account created successfully. Please log in.",
 "success"
 );
 
@@ -130,30 +148,30 @@ button.textContent = "Create My Account →";
 }
 });
 
-/* GOOGLE LOGIN */
-
+if (googleLoginButton) {
 googleLoginButton.addEventListener("click", async () => {
 clearMessage();
 
+```
 googleLoginButton.disabled = true;
 googleLoginButton.textContent = "Connecting to Google...";
 
 const { error } = await supabaseClient.auth.signInWithOAuth({
-provider: "google",
-options: {
-redirectTo:
-"https://farmpath-ai.github.io/AgroGuide-AI/dashboard.html"
-}
+  provider: "google",
+  options: {
+    redirectTo:
+      "https://farmpath-ai.github.io/AgroGuide-AI/dashboard.html"
+  }
 });
 
 if (error) {
-showMessage(error.message);
+  showMessage(error.message);
 
-```
-googleLoginButton.disabled = false;
-googleLoginButton.innerHTML =
-  '<span class="google-g">G</span> Continue with Google';
-```
-
+  googleLoginButton.disabled = false;
+  googleLoginButton.innerHTML =
+    '<span class="google-g">G</span> Continue with Google';
 }
+```
+
 });
+}
