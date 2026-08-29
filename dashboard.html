@@ -2,545 +2,658 @@
 
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Dashboard | AgroGuide AI</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
-
-  <style>
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    :root {
-      --green-dark: #0b3d27;
-      --green: #167a45;
-      --lime: #b8e34a;
-      --bg: #f4f7f2;
-      --card: #ffffff;
-      --text: #1c2b21;
-      --muted: #718076;
-      --border: #e3e9e2;
-    }
-
-    body {
-      font-family: "DM Sans", sans-serif;
-      background: var(--bg);
-      color: var(--text);
-    }
-
-    .dashboard {
-      min-height: 100vh;
-      display: flex;
-    }
-
-    /* SIDEBAR */
-
-    .sidebar {
-      width: 260px;
-      min-height: 100vh;
-      padding: 28px 18px;
-      background: var(--green-dark);
-      color: white;
-      position: fixed;
-      left: 0;
-      top: 0;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .logo {
-      font-family: "Outfit", sans-serif;
-      font-size: 24px;
-      font-weight: 800;
-      margin-bottom: 45px;
-      padding-left: 12px;
-    }
-
-    .logo span {
-      color: var(--lime);
-    }
-
-    .nav {
-      display: grid;
-      gap: 8px;
-    }
-
-    .nav-item {
-      border: none;
-      width: 100%;
-      padding: 14px 15px;
-      border-radius: 12px;
-      background: transparent;
-      color: rgba(255,255,255,.72);
-      font-family: inherit;
-      font-size: 14px;
-      text-align: left;
-      cursor: pointer;
-      transition: .2s;
-    }
-
-    .nav-item:hover,
-    .nav-item.active {
-      background: rgba(255,255,255,.1);
-      color: white;
-    }
-
-    .sidebar-bottom {
-      margin-top: auto;
-    }
-
-    .logout-button {
-      width: 100%;
-      padding: 14px;
-      border: none;
-      border-radius: 12px;
-      background: rgba(255,255,255,.1);
-      color: white;
-      font-family: inherit;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    /* MAIN */
-
-    .main {
-      width: 100%;
-      margin-left: 260px;
-      padding: 35px;
-    }
-
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 35px;
-    }
-
-    .welcome h1 {
-      font-family: "Outfit", sans-serif;
-      font-size: 32px;
-      margin-bottom: 7px;
-    }
-
-    .welcome p {
-      color: var(--muted);
-    }
-
-    .user-badge {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 14px;
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    .avatar {
-      width: 34px;
-      height: 34px;
-      display: grid;
-      place-items: center;
-      border-radius: 50%;
-      background: var(--lime);
-      color: var(--green-dark);
-    }
-
-    /* HERO */
-
-    .farm-hero {
-      margin-bottom: 28px;
-      padding: 32px;
-      border-radius: 22px;
-      color: white;
-      background:
-        radial-gradient(circle at right top, rgba(184,227,74,.22), transparent 32%),
-        var(--green-dark);
-    }
-
-    .farm-hero h2 {
-      font-family: "Outfit", sans-serif;
-      font-size: 27px;
-      margin-bottom: 10px;
-    }
-
-    .farm-hero p {
-      max-width: 650px;
-      color: rgba(255,255,255,.72);
-      line-height: 1.6;
-    }
-
-    .start-farm-button {
-      margin-top: 22px;
-      padding: 14px 20px;
-      border: none;
-      border-radius: 11px;
-      background: var(--lime);
-      color: var(--green-dark);
-      font-family: inherit;
-      font-weight: 800;
-      cursor: pointer;
-    }
-
-    /* STATS */
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 18px;
-      margin-bottom: 28px;
-    }
-
-    .stat-card {
-      padding: 22px;
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 17px;
-    }
-
-    .stat-label {
-      font-size: 13px;
-      color: var(--muted);
-      margin-bottom: 10px;
-    }
-
-    .stat-value {
-      font-family: "Outfit", sans-serif;
-      font-size: 25px;
-      font-weight: 800;
-    }
-
-    /* CONTENT GRID */
-
-    .content-grid {
-      display: grid;
-      grid-template-columns: 1.4fr 1fr;
-      gap: 22px;
-    }
-
-    .card {
-      padding: 25px;
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 18px;
-    }
-
-    .card h3 {
-      font-family: "Outfit", sans-serif;
-      margin-bottom: 18px;
-    }
-
-    .activity-item {
-      padding: 14px 0;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .activity-item:last-child {
-      border-bottom: none;
-    }
-
-    .activity-item strong {
-      display: block;
-      font-size: 14px;
-      margin-bottom: 4px;
-    }
-
-    .activity-item span {
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .quick-actions {
-      display: grid;
-      gap: 12px;
-    }
-
-    .quick-action {
-      padding: 15px;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      background: #fafcf9;
-      font-family: inherit;
-      text-align: left;
-      cursor: pointer;
-    }
-
-    .quick-action strong {
-      display: block;
-      margin-bottom: 3px;
-    }
-
-    .quick-action span {
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    /* RESPONSIVE */
-
-    @media (max-width: 950px) {
-
-      .stats {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .content-grid {
-        grid-template-columns: 1fr;
-      }
-
-    }
-
-    @media (max-width: 700px) {
-
-      .sidebar {
-        width: 70px;
-        padding: 20px 10px;
-      }
-
-      .logo {
-        font-size: 0;
-        padding: 0;
-        text-align: center;
-      }
-
-      .logo::before {
-        content: "🌱";
-        font-size: 27px;
-      }
-
-      .nav-item {
-        font-size: 0;
-        text-align: center;
-      }
-
-      .nav-item::first-letter {
-        font-size: 18px;
-      }
-
-      .logout-button {
-        font-size: 0;
-      }
-
-      .logout-button::after {
-        content: "↪";
-        font-size: 20px;
-      }
-
-      .main {
-        margin-left: 70px;
-        padding: 22px;
-      }
-
-      .topbar {
-        align-items: flex-start;
-        gap: 15px;
-        flex-direction: column;
-      }
-
-      .stats {
-        grid-template-columns: 1fr;
-      }
-
-    }
-
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dashboard | AgroGuide AI</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --dark: #0b3d27;
+  --green: #167a45;
+  --lime: #b8e34a;
+  --bg: #f4f7f2;
+  --card: #ffffff;
+  --text: #1c2b21;
+  --muted: #718076;
+  --border: #e1e8df;
+}
+
+body {
+  font-family: "DM Sans", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.sidebar {
+  width: 260px;
+  min-height: 100vh;
+  position: fixed;
+  padding: 28px 18px;
+  background: var(--dark);
+  color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.logo {
+  font-family: Outfit;
+  font-size: 24px;
+  font-weight: 800;
+  margin-bottom: 40px;
+  padding-left: 10px;
+}
+
+.logo span {
+  color: var(--lime);
+}
+
+.nav {
+  display: grid;
+  gap: 8px;
+}
+
+.nav-item {
+  border: none;
+  background: transparent;
+  color: rgba(255,255,255,.75);
+  padding: 14px;
+  border-radius: 12px;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.nav-item:hover,
+.nav-item.active {
+  background: rgba(255,255,255,.1);
+  color: white;
+}
+
+.logout-button {
+  margin-top: auto;
+  border: none;
+  padding: 14px;
+  border-radius: 12px;
+  background: rgba(255,255,255,.1);
+  color: white;
+  font-family: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.main {
+  margin-left: 260px;
+  padding: 35px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.topbar h1 {
+  font-family: Outfit;
+  font-size: 32px;
+}
+
+.topbar p {
+  color: var(--muted);
+  margin-top: 6px;
+}
+
+.user {
+  background: white;
+  border: 1px solid var(--border);
+  padding: 12px 15px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.hero {
+  background: var(--dark);
+  color: white;
+  padding: 32px;
+  border-radius: 22px;
+  margin-bottom: 25px;
+}
+
+.hero h2 {
+  font-family: Outfit;
+  font-size: 28px;
+}
+
+.hero p {
+  margin-top: 10px;
+  color: rgba(255,255,255,.7);
+}
+
+.primary-button {
+  margin-top: 20px;
+  border: none;
+  padding: 14px 20px;
+  border-radius: 11px;
+  background: var(--lime);
+  color: var(--dark);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 18px;
+  margin-bottom: 25px;
+}
+
+.stat {
+  background: white;
+  padding: 22px;
+  border-radius: 17px;
+  border: 1px solid var(--border);
+}
+
+.stat-label {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.stat-value {
+  font-family: Outfit;
+  font-size: 28px;
+  font-weight: 800;
+  margin-top: 8px;
+}
+
+.card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 25px;
+}
+
+.card h2 {
+  font-family: Outfit;
+  margin-bottom: 18px;
+}
+
+.farm-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill,minmax(260px,1fr));
+  gap: 18px;
+}
+
+.farm-card {
+  padding: 20px;
+  border-radius: 15px;
+  background: #f8fbf7;
+  border: 1px solid var(--border);
+}
+
+.farm-card h3 {
+  margin-bottom: 10px;
+}
+
+.farm-card p {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 6px 0;
+}
+
+.farm-card button {
+  margin-top: 14px;
+  border: none;
+  background: var(--green);
+  color: white;
+  padding: 10px 13px;
+  border-radius: 9px;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 700;
+}
+
+.empty {
+  color: var(--muted);
+  padding: 20px 0;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal.show {
+  display: flex;
+}
+
+.modal-box {
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: white;
+  border-radius: 20px;
+  padding: 30px;
+}
+
+.modal-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 22px;
+}
+
+.close {
+  border: none;
+  background: #eef2ed;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 7px;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.submit {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 11px;
+  background: var(--dark);
+  color: white;
+  font-family: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.message {
+  margin-top: 15px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+@media(max-width:800px) {
+
+  .sidebar {
+    width: 70px;
+    padding: 20px 8px;
+  }
+
+  .logo {
+    font-size: 0;
+    text-align: center;
+  }
+
+  .logo::after {
+    content: "🌱";
+    font-size: 28px;
+  }
+
+  .nav-item {
+    font-size: 0;
+    text-align: center;
+  }
+
+  .nav-item::first-letter {
+    font-size: 18px;
+  }
+
+  .logout-button {
+    font-size: 0;
+  }
+
+  .logout-button::after {
+    content: "↪";
+    font-size: 20px;
+  }
+
+  .main {
+    margin-left: 70px;
+    padding: 20px;
+  }
+
+  .topbar {
+    display: block;
+  }
+
+  .user {
+    margin-top: 15px;
+  }
+
+  .stats {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+</style>
 
 </head>
 
 <body>
 
-  <div class="dashboard">
-
-```
 <aside class="sidebar">
 
-  <div class="logo">
-    AgroGuide<span>AI</span>
-  </div>
+<div class="logo">
+🌱 AgroGuide<span>AI</span>
+</div>
 
-  <nav class="nav">
+<nav class="nav">
 
-    <button class="nav-item active">
-      🏠 Dashboard
-    </button>
+<button class="nav-item active">
+🏠 Dashboard
+</button>
 
-    <button class="nav-item">
-      🚜 My Farms
-    </button>
+<button id="myFarmsNav" class="nav-item">
+🚜 My Farms
+</button>
 
-    <button class="nav-item">
-      📅 Farm Calendar
-    </button>
+<button id="calendarNav" class="nav-item">
+📅 Farm Calendar
+</button>
 
-    <button class="nav-item">
-      🤖 AI Agronomist
-    </button>
+<button id="aiNav" class="nav-item">
+🤖 AI Agronomist
+</button>
 
-    <button class="nav-item">
-      🌦 Weather
-    </button>
+</nav>
 
-    <button class="nav-item">
-      🌾 Crop Advisor
-    </button>
-
-    <button class="nav-item">
-      💰 Farm Expenses
-    </button>
-
-  </nav>
-
-  <div class="sidebar-bottom">
-
-    <button id="logoutButton" class="logout-button">
-      Log Out
-    </button>
-
-  </div>
+<button id="logoutButton" class="logout-button">
+Log Out
+</button>
 
 </aside>
 
-
 <main class="main">
 
-  <div class="topbar">
+<div class="topbar">
 
-    <div class="welcome">
+<div>
 
-      <h1>
-        Welcome back, <span id="userName">Farmer</span> 👋
-      </h1>
+<h1>
+Welcome, <span id="userName">Farmer</span> 👋
+</h1>
 
-      <p>
-        Your smart farming assistant is ready.
-      </p>
+<p>
+Your digital agronomist is ready to help.
+</p>
 
-    </div>
+</div>
 
-    <div class="user-badge">
+<div class="user" id="userEmail">
+Loading...
+</div>
 
-      <div class="avatar">🌱</div>
+</div>
 
-      <span id="userEmail">
-        Loading...
-      </span>
+<section class="hero">
 
-    </div>
+<h2>Manage Your Farm Smarter 🌾</h2>
 
-  </div>
+<p>
+Register your farm and AgroGuide AI will create personalized
+guidance throughout your farming journey.
+</p>
 
+<button id="registerFarmButton" class="primary-button">
++ Register Your Farm
+</button>
 
-  <section class="farm-hero">
+</section>
 
-    <h2>Start Your Smart Farming Journey 🌾</h2>
+<section class="stats">
 
-    <p>
-      Register your farm and AgroGuide AI will help you plan,
-      monitor and manage every stage of your farming cycle.
-    </p>
+<div class="stat">
 
-    <button id="registerFarmButton" class="start-farm-button">
-      + Register Your Farm
-    </button>
+<div class="stat-label">
+Registered Farms
+</div>
 
-  </section>
+<div id="farmCount" class="stat-value">
+0
+</div>
 
+</div>
 
-  <section class="stats">
+<div class="stat">
 
-    <div class="stat-card">
-      <div class="stat-label">Registered Farms</div>
-      <div class="stat-value" id="farmCount">0</div>
-    </div>
+<div class="stat-label">
+AI Farm Plans
+</div>
 
-    <div class="stat-card">
-      <div class="stat-label">Upcoming Activities</div>
-      <div class="stat-value">0</div>
-    </div>
+<div id="planCount" class="stat-value">
+0
+</div>
 
-    <div class="stat-card">
-      <div class="stat-label">Current Season</div>
-      <div class="stat-value">Ready</div>
-    </div>
+</div>
 
-    <div class="stat-card">
-      <div class="stat-label">AI Insights</div>
-      <div class="stat-value">0</div>
-    </div>
+<div class="stat">
 
-  </section>
+<div class="stat-label">
+System Status
+</div>
 
+<div class="stat-value">
+Ready
+</div>
 
-  <section class="content-grid">
+</div>
 
-    <div class="card">
+</section>
 
-      <h3>Upcoming Farm Activities</h3>
+<section id="farmsSection" class="card">
 
-      <div id="activityList">
+<h2>
+🚜 My Farms
+</h2>
 
-        <div class="activity-item">
+<div id="farmList" class="farm-grid">
 
-          <strong>
-            Register your first farm
-          </strong>
+<div class="empty">
+Loading your farms...
+</div>
 
-          <span>
-            Start by adding your farm information.
-          </span>
+</div>
 
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <div class="card">
-
-      <h3>Quick Actions</h3>
-
-      <div class="quick-actions">
-
-        <button id="quickFarmButton" class="quick-action">
-          <strong>🚜 Register a Farm</strong>
-          <span>Add your farm details</span>
-        </button>
-
-        <button class="quick-action">
-          <strong>🌾 Ask AI Agronomist</strong>
-          <span>Get farming guidance</span>
-        </button>
-
-        <button class="quick-action">
-          <strong>🌦 Check Weather</strong>
-          <span>See farm weather insights</span>
-        </button>
-
-      </div>
-
-    </div>
-
-  </section>
+</section>
 
 </main>
-```
 
-  </div>
+<div id="farmModal" class="modal">
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<div class="modal-box">
 
-  <script src="dashboard.js"></script>
+<div class="modal-top">
+
+<h2>Register Your Farm 🌱</h2>
+
+<button id="closeModal" class="close">
+×
+</button>
+
+</div>
+
+<form id="farmForm">
+
+<div class="form-group">
+
+<label>
+Farm Name
+</label>
+
+<input
+id="farmName"
+required
+placeholder="e.g. Green Valley Farm"
+
+>
+
+</div>
+
+<div class="form-group">
+
+<label>
+Farm Location
+</label>
+
+<input
+id="farmLocation"
+required
+placeholder="e.g. Ibadan, Oyo State"
+
+>
+
+</div>
+
+<div class="form-group">
+
+<label>
+Farm Size
+</label>
+
+<input
+id="farmSize"
+type="number"
+step="0.01"
+required
+placeholder="e.g. 2.5"
+
+>
+
+</div>
+
+<div class="form-group">
+
+<label>
+Soil Type
+</label>
+
+<select id="soilType">
+
+<option value="Unknown">
+Unknown
+</option>
+
+<option value="Loamy">
+Loamy
+</option>
+
+<option value="Sandy">
+Sandy
+</option>
+
+<option value="Clay">
+Clay
+</option>
+
+<option value="Silty">
+Silty
+</option>
+
+</select>
+
+</div>
+
+<div class="form-group">
+
+<label>
+Main Crop
+</label>
+
+<select id="farmCrop" required>
+
+<option value="">
+Select crop
+</option>
+
+<option>Maize</option>
+<option>Cassava</option>
+<option>Rice</option>
+<option>Tomato</option>
+<option>Yam</option>
+<option>Beans</option>
+<option>Plantain</option>
+<option>Vegetables</option>
+
+</select>
+
+</div>
+
+<div class="form-group">
+
+<label>
+Previous Farming History
+</label>
+
+<textarea
+id="farmHistory"
+placeholder="What crops have previously been grown here?"
+></textarea>
+
+</div>
+
+<button id="saveFarmButton" class="submit" type="submit">
+Save Farm & Generate Plan 🌾
+</button>
+
+<div id="farmMessage" class="message"></div>
+
+</form>
+
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="dashboard.js"></script>
 
 </body>
 </html>
