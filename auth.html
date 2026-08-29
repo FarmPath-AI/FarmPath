@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,7 +22,7 @@
       place-items: center;
       padding: 30px;
       background:
-        radial-gradient(circle at top left, rgba(184,227,74,.25), transparent 35%),
+        radial-gradient(circle at top left, rgba(184, 227, 74, .25), transparent 35%),
         #f7f6f0;
     }
 
@@ -34,7 +35,7 @@
       background: white;
       border-radius: 28px;
       overflow: hidden;
-      box-shadow: 0 30px 80px rgba(11,61,39,.15);
+      box-shadow: 0 30px 80px rgba(11, 61, 39, .15);
     }
 
     .auth-brand {
@@ -44,17 +45,21 @@
       flex-direction: column;
       justify-content: space-between;
       background:
-        radial-gradient(circle at top right, rgba(184,227,74,.22), transparent 30%),
+        radial-gradient(circle at top right, rgba(184, 227, 74, .22), transparent 30%),
         #0b3d27;
     }
 
     .auth-brand .logo {
       color: white;
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 20px;
     }
 
     .auth-brand h1 {
       font-size: clamp(42px, 5vw, 65px);
       letter-spacing: -2px;
+      margin: 0;
     }
 
     .auth-brand h1 span {
@@ -64,7 +69,7 @@
     .auth-brand p {
       margin-top: 20px;
       max-width: 400px;
-      color: rgba(255,255,255,.7);
+      color: rgba(255, 255, 255, .7);
     }
 
     .auth-benefits {
@@ -75,7 +80,7 @@
     .auth-benefits div {
       padding: 15px;
       border-radius: 13px;
-      background: rgba(255,255,255,.08);
+      background: rgba(255, 255, 255, .08);
       font-size: 14px;
     }
 
@@ -91,10 +96,12 @@
       font-weight: 700;
       color: #167a45;
       margin-bottom: 35px;
+      text-decoration: none;
     }
 
     .auth-panel h2 {
       font-size: 36px;
+      margin: 0;
     }
 
     .auth-subtitle {
@@ -125,7 +132,7 @@
     .auth-tab.active {
       background: white;
       color: #167a45;
-      box-shadow: 0 4px 10px rgba(0,0,0,.05);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, .05);
     }
 
     .auth-form {
@@ -149,6 +156,7 @@
 
     input {
       width: 100%;
+      box-sizing: border-box;
       padding: 14px;
       border: 1px solid #dce4dc;
       border-radius: 10px;
@@ -159,7 +167,7 @@
 
     input:focus {
       border-color: #167a45;
-      box-shadow: 0 0 0 3px rgba(22,122,69,.1);
+      box-shadow: 0 0 0 3px rgba(22, 122, 69, .1);
     }
 
     .submit-button {
@@ -264,6 +272,10 @@
     }
 
     @media (max-width: 800px) {
+      body {
+        padding: 15px;
+      }
+
       .auth-container {
         grid-template-columns: 1fr;
       }
@@ -340,8 +352,6 @@
   <div id="authMessage" class="message"></div>
 
 
-  <!-- GOOGLE LOGIN -->
-
   <div class="google-login">
 
     <div class="google-divider">
@@ -355,8 +365,6 @@
 
   </div>
 
-
-  <!-- LOGIN FORM -->
 
   <form id="loginForm" class="auth-form active">
 
@@ -372,7 +380,6 @@
       >
     </div>
 
-
     <div class="form-group">
       <label for="loginPassword">Password</label>
 
@@ -386,15 +393,12 @@
       >
     </div>
 
-
     <button type="submit" class="submit-button">
       Log In →
     </button>
 
   </form>
 
-
-  <!-- SIGNUP FORM -->
 
   <form id="signupForm" class="auth-form">
 
@@ -411,7 +415,6 @@
       >
     </div>
 
-
     <div class="form-group">
       <label for="signupEmail">Email address</label>
 
@@ -423,7 +426,6 @@
         placeholder="you@example.com"
       >
     </div>
-
 
     <div class="form-group">
       <label for="signupPassword">Password</label>
@@ -438,7 +440,6 @@
       >
     </div>
 
-
     <button type="submit" class="submit-button">
       Create My Account →
     </button>
@@ -449,8 +450,6 @@
 ```
 
   </div>
-
-  <!-- SUPABASE -->
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
