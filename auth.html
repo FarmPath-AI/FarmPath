@@ -1,6 +1,236 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Welcome | FarmPath</title><link rel="stylesheet" href="style.css"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet"></head>
-<body class="auth-page"><div class="auth-shell"><aside><a class="brand white" href="index.html"><b>🌾 Farm<span>Path</span></b></a><div><div class="eyebrow darkey">NORTHERN NIGERIA'S AI FARMING ASSISTANT</div><h1>Your Farm.<br><em>Smarter.</em></h1><p>Guidance throughout your farming journey.</p></div><div class="benefits"><span>🤖 Your digital farm assistant</span><span>📅 Personalized farm calendar</span><span>🌾 From land preparation to harvest</span></div></aside>
-<main class="auth-card"><a href="index.html" class="back">← Back to home</a><h2>Welcome to FarmPath</h2><p>Sign in or create your farmer account.</p><div class="tabs"><button class="tab active" data-target="loginForm">Log In</button><button class="tab" data-target="signupForm">Create Account</button></div><div id="message"></div>
-<form id="loginForm" class="form active"><label>Email<input id="loginEmail" type="email" required placeholder="you@example.com"></label><label>Password<input id="loginPassword" type="password" required minlength="6" placeholder="Your password"></label><button class="btn btn-dark full" type="submit">Log In →</button></form>
-<form id="signupForm" class="form"><label>Full name<input id="signupName" required minlength="2" placeholder="Your name"></label><label>Email<input id="signupEmail" type="email" required placeholder="you@example.com"></label><label>Password<input id="signupPassword" type="password" required minlength="6" placeholder="At least 6 characters"></label><button class="btn btn-dark full" type="submit">Create My Account →</button></form>
-<div class="demo-note">Demo mode: accounts are saved securely in this browser for this prototype.</div></main></div><script src="auth.js"></script></body></html>
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1"
+
+>
+
+  <title>Welcome | FarmPath</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+</head>
+
+<body class="auth-page">
+
+  <div class="auth-shell">
+
+```
+<aside>
+
+  <a class="brand white" href="index.html">
+    <b>🌾 Farm<span>Path</span></b>
+  </a>
+
+  <div>
+
+    <div class="eyebrow darkey">
+      NORTHERN NIGERIA'S AI FARMING ASSISTANT
+    </div>
+
+    <h1>
+      Your Farm.<br>
+      <em>Smarter.</em>
+    </h1>
+
+    <p>
+      Guidance throughout your farming journey.
+    </p>
+
+  </div>
+
+  <div class="benefits">
+
+    <span>
+      🤖 Your digital farm assistant
+    </span>
+
+    <span>
+      📅 Personalized farm calendar
+    </span>
+
+    <span>
+      🌾 From land preparation to harvest
+    </span>
+
+  </div>
+
+</aside>
+
+
+<main class="auth-card">
+
+  <a href="index.html" class="back">
+    ← Back to home
+  </a>
+
+  <h2>Welcome to FarmPath</h2>
+
+  <p>
+    Sign in or create your farmer account.
+  </p>
+
+
+  <div class="tabs">
+
+    <button
+      type="button"
+      class="tab active"
+      data-target="loginForm"
+    >
+      Log In
+    </button>
+
+
+    <button
+      type="button"
+      class="tab"
+      data-target="signupForm"
+    >
+      Create Account
+    </button>
+
+  </div>
+
+
+  <div id="message"></div>
+
+
+  <!-- LOGIN -->
+
+  <form id="loginForm" class="form active">
+
+    <label>
+
+      Email
+
+      <input
+        id="loginEmail"
+        type="email"
+        required
+        placeholder="you@example.com"
+      >
+
+    </label>
+
+
+    <label>
+
+      Password
+
+      <input
+        id="loginPassword"
+        type="password"
+        required
+        minlength="6"
+        placeholder="Your password"
+      >
+
+    </label>
+
+
+    <button
+      class="btn btn-dark full"
+      type="submit"
+    >
+      Log In →
+    </button>
+
+  </form>
+
+
+  <!-- CREATE ACCOUNT -->
+
+  <form id="signupForm" class="form">
+
+    <label>
+
+      Full name
+
+      <input
+        id="signupName"
+        type="text"
+        required
+        minlength="2"
+        placeholder="Your name"
+      >
+
+    </label>
+
+
+    <label>
+
+      Email
+
+      <input
+        id="signupEmail"
+        type="email"
+        required
+        placeholder="you@example.com"
+      >
+
+    </label>
+
+
+    <label>
+
+      Password
+
+      <input
+        id="signupPassword"
+        type="password"
+        required
+        minlength="6"
+        placeholder="At least 6 characters"
+      >
+
+    </label>
+
+
+    <button
+      class="btn btn-dark full"
+      type="submit"
+    >
+      Create My Account →
+    </button>
+
+  </form>
+
+
+  <div class="demo-note">
+
+    Demo mode: accounts are saved in this browser for this prototype.
+
+  </div>
+
+</main>
+```
+
+  </div>
+
+  <!-- IMPORTANT: LOAD APP.JS FIRST -->
+
+  <script src="app.js"></script>
+
+  <!-- THEN LOAD AUTH.JS -->
+
+  <script src="auth.js"></script>
+
+</body>
+</html>
