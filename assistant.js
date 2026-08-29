@@ -1,330 +1,516 @@
+document.addEventListener("DOMContentLoaded", () => {
+
 const chatForm = document.getElementById("chatForm");
-
 const userQuestion = document.getElementById("userQuestion");
-
 const chatMessages = document.getElementById("chatMessages");
+
+console.log("FarmPath AI Assistant loaded");
+
+if (!chatForm || !userQuestion || !chatMessages) {
+console.error("FarmPath AI error: Chat elements were not found.");
+return;
+}
+
+function scrollToBottom() {
+chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function escapeHTML(text) {
+const div = document.createElement("div");
+div.textContent = text;
+return div.innerHTML;
+}
 
 function addMessage(text, sender) {
 
+```
 const message = document.createElement("div");
 
 message.className = `chat-message ${sender}`;
 
 if (sender === "ai") {
 
-```
-message.innerHTML = `
-  <div class="chat-avatar">🤖</div>
+  message.innerHTML = `
+    <div class="chat-avatar">🤖</div>
 
-  <div class="chat-bubble">
-    ${text}
-  </div>
-`;
-```
+    <div class="chat-bubble">
+      ${text}
+    </div>
+  `;
 
 } else {
 
-```
-message.innerHTML = `
-  <div class="chat-bubble">
-    ${text}
-  </div>
-`;
-```
-
+  message.innerHTML = `
+    <div class="chat-bubble">
+      ${escapeHTML(text)}
+    </div>
+  `;
 }
 
 chatMessages.appendChild(message);
 
-chatMessages.scrollTop =
-chatMessages.scrollHeight;
+scrollToBottom();
+```
+
+}
+
+function showThinking() {
+
+```
+const thinking = document.createElement("div");
+
+thinking.className = "chat-message ai";
+thinking.id = "thinkingMessage";
+
+thinking.innerHTML = `
+  <div class="chat-avatar">🤖</div>
+
+  <div class="chat-bubble">
+    🌾 FarmPath is thinking...
+  </div>
+`;
+
+chatMessages.appendChild(thinking);
+
+scrollToBottom();
+```
+
+}
+
+function removeThinking() {
+
+```
+const thinking =
+  document.getElementById("thinkingMessage");
+
+if (thinking) {
+  thinking.remove();
+}
+```
 
 }
 
 function getFarmPathResponse(question) {
 
+```
 const q = question.toLowerCase();
 
-if (
-q.includes("plant") ||
-q.includes("maize") ||
-q.includes("seed")
-) {
 
-```
-return `
-  <b>🌱 Planting guidance</b>
-
-  <p>
-    The best planting time depends on your state,
-    rainfall pattern and whether your farm is irrigated.
-  </p>
-
-  <p>
-    Before planting, make sure the land is properly prepared,
-    use suitable seed and plant when soil moisture is adequate.
-  </p>
-
-  <p>
-    <b>Tip:</b> Tell me your crop, state and planting date
-    for more personalized guidance.
-  </p>
-`;
-```
-
-}
+/* PLANTING */
 
 if (
-q.includes("fertilizer") ||
-q.includes("fertiliser")
+  q.includes("plant") ||
+  q.includes("planting") ||
+  q.includes("maize") ||
+  q.includes("seed")
 ) {
 
-```
-return `
-  <b>🧪 Fertilizer guidance</b>
+  return `
+    <b>🌱 Planting guidance</b>
 
-  <p>
-    Fertilizer recommendations should ideally be based on
-    a soil test, crop requirements and your farm size.
-  </p>
+    <p>
+      The best planting time depends on your location,
+      rainfall pattern, crop variety and whether your farm
+      is irrigated or rain-fed.
+    </p>
 
-  <p>
-    Avoid applying fertilizer immediately before heavy rainfall,
-    because nutrients may be lost.
-  </p>
+    <p>
+      Before planting:
+    </p>
 
-  <p>
-    Tell me your crop, farm size and available soil information
-    and FarmPath can help you plan the calculation.
-  </p>
-`;
-```
+    <ol>
+      <li>Prepare the land properly.</li>
+      <li>Use good-quality seed suitable for your area.</li>
+      <li>Ensure adequate soil moisture.</li>
+      <li>Use the correct spacing and planting depth.</li>
+      <li>Monitor germination after planting.</li>
+    </ol>
 
+    <p>
+      🌾 <b>For personalized guidance, tell me:</b>
+      your crop, state, farm size and planned planting date.
+    </p>
+  `;
 }
+
+
+/* FERTILIZER */
 
 if (
-q.includes("pest") ||
-q.includes("armyworm") ||
-q.includes("insect")
+  q.includes("fertilizer") ||
+  q.includes("fertiliser") ||
+  q.includes("npk") ||
+  q.includes("urea")
 ) {
 
-```
-return `
-  <b>🐛 Pest management</b>
+  return `
+    <b>🧪 Fertilizer guidance</b>
 
-  <p>
-    Start by scouting the farm carefully to confirm
-    the type and level of infestation.
-  </p>
+    <p>
+      Fertilizer recommendations should ideally be based on
+      soil-test information, crop requirements and farm size.
+    </p>
 
-  <p>
-    Remove badly affected plant material where appropriate
-    and avoid spraying a product until the pest has been
-    correctly identified.
-  </p>
+    <p>
+      FarmPath can help you plan:
+    </p>
 
-  <p>
-    📷 You can also use the <b>Crop Doctor</b> page
-    to record a crop problem.
-  </p>
+    <ul>
+      <li>Suitable fertilizer types</li>
+      <li>Application timing</li>
+      <li>Application method</li>
+      <li>Estimated quantity for your farm</li>
+    </ul>
 
-  <p>
-    ⚠️ Always follow the product label and local agricultural guidance.
-  </p>
-`;
-```
+    <p>
+      ⚠️ Avoid blindly applying the same fertilizer rate to
+      every farm. Soil conditions can vary significantly.
+    </p>
 
+    <p>
+      Tell me your <b>crop, farm size and soil information</b>.
+    </p>
+  `;
 }
+
+
+/* PESTS */
 
 if (
-q.includes("yellow") ||
-q.includes("disease") ||
-q.includes("leaf") ||
-q.includes("sick")
+  q.includes("pest") ||
+  q.includes("armyworm") ||
+  q.includes("insect") ||
+  q.includes("caterpillar")
 ) {
 
-```
-return `
-  <b>🩺 Crop health check</b>
+  return `
+    <b>🐛 Pest management</b>
 
-  <p>
-    Yellow leaves can have several causes, including nutrient
-    deficiency, water stress, pests, diseases or root problems.
-  </p>
+    <p>
+      First, inspect the affected plants carefully to identify
+      the pest and estimate how widespread the problem is.
+    </p>
 
-  <p>
-    Check whether symptoms appear on older or younger leaves,
-    whether they are spreading and whether insects are present.
-  </p>
+    <p>
+      Recommended steps:
+    </p>
 
-  <p>
-    📷 For better diagnosis, use the FarmPath Crop Doctor
-    and upload a clear photograph.
-  </p>
-`;
-```
+    <ol>
+      <li>Inspect several parts of the farm.</li>
+      <li>Look for insects, eggs and feeding damage.</li>
+      <li>Record how many plants are affected.</li>
+      <li>Take clear photographs of symptoms and pests.</li>
+      <li>Use the Crop Doctor for additional assessment.</li>
+    </ol>
 
+    <p>
+      ⚠️ Do not apply a pesticide until the pest and product
+      suitability have been properly confirmed. Always follow
+      the product label and qualified local agricultural advice.
+    </p>
+  `;
 }
+
+
+/* DISEASE */
 
 if (
-q.includes("water") ||
-q.includes("irrigation") ||
-q.includes("irrigate")
+  q.includes("yellow") ||
+  q.includes("disease") ||
+  q.includes("leaf") ||
+  q.includes("sick") ||
+  q.includes("spot") ||
+  q.includes("wilting")
 ) {
 
-```
-return `
-  <b>💧 Irrigation guidance</b>
+  return `
+    <b>🩺 Crop health check</b>
 
-  <p>
-    The right irrigation schedule depends on the crop,
-    growth stage, soil type and recent rainfall.
-  </p>
+    <p>
+      Crop symptoms can have several possible causes, including:
+    </p>
 
-  <p>
-    Check soil moisture before irrigating and avoid
-    overwatering, which can damage roots and increase disease risk.
-  </p>
+    <ul>
+      <li>Nutrient deficiencies</li>
+      <li>Water stress</li>
+      <li>Insect pests</li>
+      <li>Fungal or bacterial diseases</li>
+      <li>Root problems</li>
+      <li>Heat stress</li>
+    </ul>
 
-  <p>
-    Tell me your crop and farming stage for more specific guidance.
-  </p>
-`;
-```
+    <p>
+      Check whether symptoms are appearing on older or younger
+      leaves, whether they are spreading and whether insects are
+      present.
+    </p>
 
+    <p>
+      📷 For a better assessment, use the FarmPath
+      <b>Crop Doctor</b> and upload a clear photograph.
+    </p>
+
+    <p>
+      If symptoms are severe or spreading quickly, contact a
+      qualified agricultural extension officer.
+    </p>
+  `;
 }
+
+
+/* WATER */
 
 if (
-q.includes("land") ||
-q.includes("prepare") ||
-q.includes("clearing") ||
-q.includes("plough")
+  q.includes("water") ||
+  q.includes("irrigation") ||
+  q.includes("irrigate") ||
+  q.includes("dry")
 ) {
 
-```
-return `
-  <b>🚜 Land preparation</b>
+  return `
+    <b>💧 Irrigation guidance</b>
 
-  <p>
-    A typical land preparation process may include:
-  </p>
+    <p>
+      The correct irrigation schedule depends on:
+    </p>
 
-  <ol>
-    <li>Assess the field and clear unwanted vegetation.</li>
-    <li>Remove obstacles and manage crop residues appropriately.</li>
-    <li>Plough where suitable for the farming system.</li>
-    <li>Harrow to prepare a suitable seedbed.</li>
-    <li>Create ridges or beds where appropriate for the crop.</li>
-  </ol>
+    <ul>
+      <li>Crop type</li>
+      <li>Growth stage</li>
+      <li>Soil type</li>
+      <li>Recent rainfall</li>
+      <li>Temperature and evaporation</li>
+    </ul>
 
-  <p>
-    The correct approach depends on soil conditions,
-    slope, crop and local farming practices.
-  </p>
-`;
-```
+    <p>
+      Check soil moisture before irrigating. Avoid both
+      underwatering and overwatering.
+    </p>
 
+    <p>
+      🌾 Tell me your crop and current growth stage for
+      more specific guidance.
+    </p>
+  `;
 }
+
+
+/* LAND PREPARATION */
 
 if (
-q.includes("harvest") ||
-q.includes("harvesting")
+  q.includes("land") ||
+  q.includes("prepare") ||
+  q.includes("clearing") ||
+  q.includes("plough") ||
+  q.includes("harrow") ||
+  q.includes("ridge")
 ) {
 
-```
+  return `
+    <b>🚜 Land preparation</b>
+
+    <p>
+      A typical preparation process may include:
+    </p>
+
+    <ol>
+      <li>Assess the field and clear unwanted vegetation.</li>
+      <li>Remove obstacles safely.</li>
+      <li>Manage residues appropriately.</li>
+      <li>Plough where suitable.</li>
+      <li>Harrow to prepare the seedbed.</li>
+      <li>Create ridges or beds when appropriate for the crop.</li>
+    </ol>
+
+    <p>
+      The correct method depends on soil conditions,
+      slope, crop and local farming practices.
+    </p>
+  `;
+}
+
+
+/* HARVEST */
+
+if (
+  q.includes("harvest") ||
+  q.includes("harvesting") ||
+  q.includes("storage") ||
+  q.includes("drying")
+) {
+
+  return `
+    <b>🌾 Harvest and post-harvest guidance</b>
+
+    <p>
+      Harvest should be based on the maturity indicators
+      appropriate for your specific crop.
+    </p>
+
+    <p>
+      Before harvesting, plan for:
+    </p>
+
+    <ul>
+      <li>Labour</li>
+      <li>Drying</li>
+      <li>Storage</li>
+      <li>Transportation</li>
+      <li>Protection from moisture and pests</li>
+    </ul>
+
+    <p>
+      Good post-harvest handling can significantly reduce losses.
+      Tell me your crop for more specific guidance.
+    </p>
+  `;
+}
+
+
+/* GREETING */
+
+if (
+  q.includes("hello") ||
+  q.includes("hi") ||
+  q.includes("good morning") ||
+  q.includes("good afternoon")
+) {
+
+  return `
+    <b>Hello! 👋 Welcome to FarmPath.</b>
+
+    <p>
+      I'm here to help guide you through your farming journey.
+    </p>
+
+    <p>
+      You can ask me about:
+    </p>
+
+    <ul>
+      <li>🌱 Planting</li>
+      <li>🚜 Land preparation</li>
+      <li>🧪 Fertilizer</li>
+      <li>🐛 Pests</li>
+      <li>🩺 Crop problems</li>
+      <li>💧 Irrigation</li>
+      <li>🌾 Harvesting</li>
+    </ul>
+  `;
+}
+
+
+/* DEFAULT */
+
 return `
-  <b>🌾 Harvest planning</b>
+  <b>🌾 FarmPath AI</b>
 
   <p>
-    Harvest when the crop has reached the appropriate
-    maturity indicators for that crop.
+    I can help you with land preparation, planting,
+    fertilizer, pests, crop diseases, irrigation,
+    farm management and harvesting.
   </p>
 
   <p>
-    Plan labour, drying, storage and transportation
-    before harvest begins to reduce post-harvest losses.
+    To give you better guidance, tell me:
   </p>
 
+  <ul>
+    <li>🌱 Your crop</li>
+    <li>📍 Your state or location</li>
+    <li>📏 Your farm size</li>
+    <li>🌾 Your current farming stage</li>
+  </ul>
+
   <p>
-    Tell me the crop you are growing and I can provide
-    more specific harvest guidance.
+    Try asking something like:
+    <b>"How should I prepare my land for maize?"</b>
   </p>
 `;
 ```
 
 }
 
-return ` <b>🌾 FarmPath AI</b>
+/* SEND QUESTION */
+
+chatForm.addEventListener("submit", (event) => {
 
 ```
-<p>
-  I can help you with land preparation, planting,
-  fertilizer, pests, crop diseases, irrigation and harvesting.
-</p>
-
-<p>
-  To give you better guidance, tell me:
-</p>
-
-<ul>
-  <li>Your crop</li>
-  <li>Your state or location</li>
-  <li>Your farm size</li>
-  <li>Your current farming stage</li>
-</ul>
-```
-
-`;
-
-}
-
-chatForm.addEventListener("submit", function (event) {
-
 event.preventDefault();
 
-const question =
-userQuestion.value.trim();
+const question = userQuestion.value.trim();
 
-if (!question) {
+if (!question) return;
 
-```
-return;
-```
 
-}
+console.log("Farmer asked:", question);
+
 
 addMessage(question, "user");
 
 userQuestion.value = "";
 
+
+showThinking();
+
+
 setTimeout(() => {
 
+  try {
+
+    const response =
+      getFarmPathResponse(question);
+
+    removeThinking();
+
+    addMessage(response, "ai");
+
+  } catch (error) {
+
+    console.error(error);
+
+    removeThinking();
+
+    addMessage(
+      `
+        <b>⚠️ FarmPath encountered a problem.</b>
+
+        <p>
+          Please try asking your question again.
+        </p>
+      `,
+      "ai"
+    );
+  }
+
+}, 700);
 ```
-const response =
-  getFarmPathResponse(question);
-
-
-addMessage(response, "ai");
-```
-
-}, 600);
 
 });
+
+/* SUGGESTED QUESTIONS */
 
 document
 .querySelectorAll(".suggestion")
 .forEach((button) => {
 
 ```
-button.addEventListener("click", () => {
+  button.addEventListener("click", () => {
 
-  userQuestion.value =
-    button.textContent.trim();
+    const question =
+      button.textContent.trim();
 
+    userQuestion.value = question;
 
-  chatForm.requestSubmit();
+    userQuestion.focus();
+
+    chatForm.requestSubmit();
+
+  });
 
 });
 ```
+
+console.log("FarmPath AI Assistant is ready");
 
 });
