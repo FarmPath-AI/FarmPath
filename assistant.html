@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1"
+
+>
+
+  <title>AI Assistant | FarmPath</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+</head>
+
+<body class="app-page">
+
+  <!-- SIDEBAR -->
+
+  <aside class="sidebar">
+
+```
+<a class="brand" href="dashboard.html">
+
+  <b>
+    🌾 Farm<span>Path</span>
+  </b>
+
+</a>
+
+
+<div class="side-label">
+  FARMER WORKSPACE
+</div>
+
+
+<a class="side" href="dashboard.html">
+  ⌂ <span>Today</span>
+</a>
+
+
+<a class="side active" href="assistant.html">
+  🤖 <span>AI Assistant</span>
+</a>
+
+
+<a class="side" href="farms.html">
+  🌾 <span>My Farms</span>
+</a>
+
+
+<a class="side" href="calendar.html">
+  📅 <span>Farm Calendar</span>
+</a>
+
+
+<a class="side" href="crop-doctor.html">
+  📷 <span>Crop Doctor</span>
+</a>
+
+
+<a class="side" href="finances.html">
+  💰 <span>Money Manager</span>
+</a>
+
+
+<div class="side-bottom">
+
+  <button id="logoutBtn">
+    ↪ Log out
+  </button>
+
+</div>
+```
+
+  </aside>
+
+  <!-- MAIN -->
+
+  <main class="app-main">
+
+```
+<header class="app-header">
+
+  <button class="mobile-menu" id="menuBtn">
+    ☰
+  </button>
+
+
+  <div>
+
+    <p>🤖 YOUR DIGITAL AGRONOMIST</p>
+
+    <h1>
+      FarmPath AI Assistant
+    </h1>
+
+  </div>
+
+
+  <div class="avatar">
+    🤖
+  </div>
+
+</header>
+
+
+<section class="ai-hero">
+
+  <div class="ai-icon">
+    🤖
+  </div>
+
+
+  <div>
+
+    <span class="eyebrow">
+      FARMING GUIDANCE
+    </span>
+
+
+    <h2>
+      Ask anything about your farm
+    </h2>
+
+
+    <p>
+      Get simple step-by-step farming guidance for land preparation,
+      planting, fertilizer, weeds, pests, diseases, irrigation and harvest.
+    </p>
+
+  </div>
+
+</section>
+
+
+<!-- SUGGESTED QUESTIONS -->
+
+<section class="suggestions">
+
+  <h3>
+    Try asking FarmPath
+  </h3>
+
+
+  <div class="suggestion-grid">
+
+    <button class="suggestion">
+      🌽 When should I plant maize?
+    </button>
+
+
+    <button class="suggestion">
+      🧪 How much fertilizer do I need?
+    </button>
+
+
+    <button class="suggestion">
+      🌱 How do I prepare my land?
+    </button>
+
+
+    <button class="suggestion">
+      🐛 How do I control fall armyworm?
+    </button>
+
+
+    <button class="suggestion">
+      💧 When should I irrigate my farm?
+    </button>
+
+
+    <button class="suggestion">
+      🟡 Why are my maize leaves turning yellow?
+    </button>
+
+  </div>
+
+</section>
+
+
+<!-- CHAT -->
+
+<section class="chat-card">
+
+  <div
+    id="chatMessages"
+    class="chat-messages"
+  >
+
+    <div class="chat-message ai">
+
+      <div class="chat-avatar">
+        🤖
+      </div>
+
+
+      <div class="chat-bubble">
+
+        <b>Hello! I'm FarmPath AI 🌾</b>
+
+        <p>
+          Tell me about your farm or ask me a farming question.
+          I can help with crop production, land preparation,
+          fertilizer, pests, diseases, irrigation and harvesting.
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <form
+    id="chatForm"
+    class="chat-input"
+  >
+
+    <input
+      id="userQuestion"
+      type="text"
+      placeholder="Ask FarmPath about your farm..."
+      autocomplete="off"
+      required
+    >
+
+
+    <button
+      type="submit"
+      class="btn btn-dark"
+    >
+      Ask AI →
+    </button>
+
+  </form>
+
+</section>
+
+
+<p class="ai-disclaimer">
+
+  ⚠️ FarmPath provides general agricultural guidance.
+  For pesticide use, serious crop diseases or major financial decisions,
+  consult a qualified agricultural extension officer.
+
+</p>
+```
+
+  </main>
+
+  <script src="app.js"></script>
+
+  <script src="assistant.js"></script>
+
+</body>
+
+</html>
