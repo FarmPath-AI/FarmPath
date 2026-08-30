@@ -5,7 +5,7 @@ const chatMessages = document.getElementById("chatMessages");
 const SUPABASE_FUNCTION_URL =
   "https://gqdclkxaxukvswiozgun.supabase.co/functions/v1/quick-service";
 
-// Use your Supabase Publishable Key
+// Your Supabase Publishable Key
 const SUPABASE_PUBLISHABLE_KEY =
   "sb_publishable_-p2KVgY-tSZSou03lrL_og_v5amaKp8";
 
@@ -33,7 +33,7 @@ function formatAIResponse(text) {
     "<em>$1</em>"
   );
 
-  // Line breaks
+  // Convert line breaks
   formatted = formatted.replace(
     /\n/g,
     "<br>"
@@ -47,8 +47,7 @@ function addMessage(text, sender) {
 
   const message = document.createElement("div");
 
-  message.className =
-    `chat-message ${sender}`;
+  message.className = `chat-message ${sender}`;
 
 
   if (sender === "ai") {
@@ -81,14 +80,11 @@ function addMessage(text, sender) {
 
 function addThinkingMessage() {
 
-  const message =
-    document.createElement("div");
+  const message = document.createElement("div");
 
-  message.className =
-    "chat-message ai";
+  message.className = "chat-message ai";
 
-  message.id =
-    "thinkingMessage";
+  message.id = "thinkingMessage";
 
 
   message.innerHTML = `
@@ -110,181 +106,197 @@ function addThinkingMessage() {
 function removeThinkingMessage() {
 
   const thinkingMessage =
-    document.getElementById(
-      "thinkingMessage"
-    );
+    document.getElementById("thinkingMessage");
 
   if (thinkingMessage) {
-
     thinkingMessage.remove();
-
   }
 
 }
 
 
-chatForm.addEventListener(
-  "submit",
-  async function (event) {
+chatForm.addEventListener("submit", async function (event) {
 
-    event.preventDefault();
+  event.preventDefault();
 
 
-    const question =
-      userQuestion.value.trim();
+  const question =
+    userQuestion.value.trim();
 
 
-    if (!question) {
-      return;
-    }
+  if (!question) {
+    return;
+  }
 
 
-    // Show user question
-    addMessage(
-      question,
-      "user"
+  // Display the user's question
+  addMessage(question, "user");
+
+
+  // Clear the input
+  userQuestion.value = "";
+
+
+  // Display loading message
+  addThinkingMessage();
+
+
+  try {
+
+    const response = await fetch(
+      SUPABASE_FUNCTION_URL,
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json",
+
+          "apikey":
+            SUPABASE_PUBLISHABLE_KEY,
+
+          "Authorization":
+            `Bearer ${SUPABASE_PUBLISHABLE_KEY}`
+        },
+
+        body: JSON.stringify({
+
+          question: question,
+
+          farm: {}
+
+        })
+
+      }
     );
 
 
-    userQuestion.value = "";
+    // Try to read the response safely
+    const responseText =
+      await response.text();
 
 
-    // Show loading message
-    addThinkingMessage();
-
+    let data = {};
 
     try {
 
-      const response =
-        await fetch(
-          SUPABASE_FUNCTION_URL,
-          {
+      data = JSON.parse(responseText);
 
-            method: "POST",
+    } catch {
 
-            headers: {
-
-              "Content-Type":
-                "application/json",
-
-              "apikey":
-                SUPABASE_PUBLISHABLE_KEY,
-
-              "Authorization":
-                `Bearer ${SUPABASE_PUBLISHABLE_KEY}`
-
-            },
-
-            body:
-              JSON.stringify({
-
-                question: question,
-
-                farm: {}
-
-              })
-
-          }
-        );
-
-
-      const data =
-        await response.json();
-
-
-      console.log(
-        "FarmPath AI response:",
-        data
-      );
-
-
-      removeThinkingMessage();
-
-
-      if (!response.ok) {
-
-        console.error(
-          "FarmPath AI error:",
-          data
-        );
-
-
-        addMessage(
-          `⚠️ FarmPath AI connection error
-
-${data.details ||
-data.error ||
-"Please try again."}`,
-          "ai"
-        );
-
-
-        return;
-
-      }
-
-
-      if (!data.answer) {
-
-        addMessage(
-          `⚠️ FarmPath AI connection error
-
-Gemini returned no answer.`,
-          "ai"
-        );
-
-
-        return;
-
-      }
-
-
-      // Show AI answer
-      addMessage(
-        data.answer,
-        "ai"
-      );
-
-
-    } catch (error) {
-
-      console.error(
-        "FarmPath AI error:",
-        error
-      );
-
-
-      removeThinkingMessage();
-
-
-      addMessage(
-        `⚠️ I couldn't connect to FarmPath AI.
-
-Please check your internet connection and try again.`,
-        "ai"
-      );
+      data = {
+        error: responseText
+      };
 
     }
 
+
+    console.log(
+      "FarmPath Response Status:",
+      response.status
+    );
+
+    console.log(
+      "FarmPath Response:",
+      data
+    );
+
+
+    // Remove loading message
+    removeThinkingMessage();
+
+
+    // Show the REAL error if something fails
+    if (!response.ok) {
+
+      let errorMessage =
+        "FarmPath AI could not process your question.";
+
+      if (data.details) {
+
+        errorMessage =
+          data.details;
+
+      } else if (data.error) {
+
+        errorMessage =
+          data.error;
+
+      }
+
+
+      addMessage(
+        `⚠️ <strong>FarmPath AI connection error</strong>
+
+${errorMessage}
+
+<small>Status code: ${response.status}</small>`,
+        "ai"
+      );
+
+
+      return;
+
+    }
+
+
+    // Check for an AI answer
+    if (!data.answer) {
+
+      addMessage(
+        `⚠️ <strong>FarmPath AI returned no answer.</strong>
+
+Please try asking your question again.`,
+        "ai"
+      );
+
+
+      return;
+
+    }
+
+
+    // Display Gemini's answer
+    addMessage(
+      data.answer,
+      "ai"
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      "FarmPath connection error:",
+      error
+    );
+
+
+    removeThinkingMessage();
+
+
+    addMessage(
+      `⚠️ <strong>FarmPath AI connection error</strong>
+
+${error.message || "Unable to connect to the AI service."}`,
+      "ai"
+    );
+
   }
-);
+
+});
 
 
 document
   .querySelectorAll(".suggestion")
   .forEach((button) => {
 
-    button.addEventListener(
-      "click",
-      () => {
+    button.addEventListener("click", () => {
 
-        userQuestion.value =
-          button.textContent.trim();
+      userQuestion.value =
+        button.textContent.trim();
 
 
-        chatForm.requestSubmit();
+      chatForm.requestSubmit();
 
-      }
-    );
+    });
 
   });
