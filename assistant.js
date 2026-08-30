@@ -2,196 +2,224 @@ const chatForm = document.getElementById("chatForm");
 const userQuestion = document.getElementById("userQuestion");
 const chatMessages = document.getElementById("chatMessages");
 
-// Your Supabase Edge Function
-const FUNCTION_URL =
+const SUPABASE_FUNCTION_URL =
   "https://gqdclkxaxukvswiozgun.supabase.co/functions/v1/quick-service";
 
-// Paste your Supabase PUBLISHABLE key here
-const SUPABASE_PUBLISHABLE_KEY =
-  "sb_publishable_ZEBgVQwsdSYjjMq2F1WKZw_TD_fEFVC";
+
+function formatAIResponse(text) {
+
+  return text
+    // Bold
+    .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+
+    // Bullet points
+    .replace(/^\* (.*)$/gm, "<li>$1</li>")
+
+    // Numbered lists
+    .replace(/^(\d+)\. \*\*(.*?)\*\*:?\s*/gm, "<p><strong>$1. $2</strong></p>")
+
+    // Line breaks
+    .replace(/\n/g, "<br>");
+}
 
 
 function addMessage(text, sender) {
+
   const message = document.createElement("div");
 
   message.className = `chat-message ${sender}`;
 
   if (sender === "ai") {
+
     message.innerHTML = `
       <div class="chat-avatar">🤖</div>
 
       <div class="chat-bubble">
-        ${text}
+        ${formatAIResponse(text)}
       </div>
     `;
+
   } else {
+
     message.innerHTML = `
       <div class="chat-bubble">
         ${text}
       </div>
     `;
+
   }
 
   chatMessages.appendChild(message);
 
-  chatMessages.scrollTop = chatMessages.scrollHeight;
-
-  return message;
+  chatMessages.scrollTop =
+    chatMessages.scrollHeight;
 }
 
 
-async function askFarmPathAI(question) {
+function addThinkingMessage() {
 
-  // Get farm information if it exists
-  const activeFarm =
-    JSON.parse(localStorage.getItem("activeFarm")) || {};
+  const message = document.createElement("div");
 
-  const response = await fetch(FUNCTION_URL, {
-    method: "POST",
+  message.className = "chat-message ai thinking-message";
 
-    headers: {
-      "Content-Type": "application/json",
+  message.id = "thinkingMessage";
 
-      "apikey": SUPABASE_PUBLISHABLE_KEY,
+  message.innerHTML = `
+    <div class="chat-avatar">🤖</div>
 
-      "Authorization":
-        `Bearer ${SUPABASE_PUBLISHABLE_KEY}`
-    },
+    <div class="chat-bubble">
+      🌾 FarmPath AI is thinking...
+    </div>
+  `;
 
-    body: JSON.stringify({
-      question: question,
+  chatMessages.appendChild(message);
 
-      farm: {
-        crop: activeFarm.crop || "",
-        state: activeFarm.state || "",
-        lga: activeFarm.lga || "",
-        farmSize: activeFarm.farmSize || "",
-        plantingDate: activeFarm.plantingDate || "",
-        farmingType: activeFarm.farmingType || ""
+  chatMessages.scrollTop =
+    chatMessages.scrollHeight;
+}
+
+
+function removeThinkingMessage() {
+
+  const thinkingMessage =
+    document.getElementById("thinkingMessage");
+
+  if (thinkingMessage) {
+    thinkingMessage.remove();
+  }
+
+}
+
+
+chatForm.addEventListener("submit", async function (event) {
+
+  event.preventDefault();
+
+  const question =
+    userQuestion.value.trim();
+
+  if (!question) {
+    return;
+  }
+
+
+  // Show farmer's question
+  addMessage(question, "user");
+
+  // Clear input
+  userQuestion.value = "";
+
+  // Show thinking message
+  addThinkingMessage();
+
+
+  try {
+
+    const response = await fetch(
+      SUPABASE_FUNCTION_URL,
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify({
+          question: question,
+
+          farm: {}
+        }),
+
       }
-    })
-  });
-
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    console.error("FarmPath AI Error:", data);
-
-    throw new Error(
-      data.details ||
-      data.error ||
-      "Could not connect to FarmPath AI."
     );
-  }
 
 
-  if (!data.answer) {
-    throw new Error(
-      "FarmPath AI returned an empty response."
-    );
-  }
+    const data =
+      await response.json();
 
 
-  return data.answer;
-}
+    removeThinkingMessage();
 
 
-chatForm.addEventListener(
-  "submit",
-  async function (event) {
+    if (!response.ok) {
 
-    event.preventDefault();
-
-    const question =
-      userQuestion.value.trim();
-
-
-    if (!question) {
-      return;
-    }
-
-
-    // Show user's message
-    addMessage(question, "user");
-
-    // Clear input
-    userQuestion.value = "";
-
-
-    // Show thinking message
-    const thinkingMessage =
       addMessage(
         `
-        <b>🌾 FarmPath AI is thinking...</b>
-        <p>Thinking...</p>
+        <strong>⚠️ FarmPath AI connection error</strong>
+
+        <br><br>
+
+        ${data.details || data.error || "Please try again."}
         `,
         "ai"
       );
 
-
-    try {
-
-      const answer =
-        await askFarmPathAI(question);
-
-
-      // Replace thinking message
-      thinkingMessage.innerHTML = `
-        <div class="chat-avatar">
-          🤖
-        </div>
-
-        <div class="chat-bubble">
-          ${answer}
-        </div>
-      `;
-
-    } catch (error) {
-
-      console.error(error);
-
-
-      // Show the REAL error temporarily
-      thinkingMessage.innerHTML = `
-        <div class="chat-avatar">
-          🤖
-        </div>
-
-        <div class="chat-bubble">
-          <b>⚠️ FarmPath AI connection error</b>
-
-          <p>
-            ${error.message}
-          </p>
-        </div>
-      `;
-
+      return;
     }
 
 
-    chatMessages.scrollTop =
-      chatMessages.scrollHeight;
+    if (!data.answer) {
+
+      addMessage(
+        `
+        <strong>⚠️ FarmPath AI connection error</strong>
+
+        <br><br>
+
+        Gemini returned no answer.
+        `,
+        "ai"
+      );
+
+      return;
+    }
+
+
+    // Show AI answer
+    addMessage(
+      data.answer,
+      "ai"
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      "FarmPath AI error:",
+      error
+    );
+
+
+    removeThinkingMessage();
+
+
+    addMessage(
+      `
+      <strong>⚠️ I couldn't connect to FarmPath AI right now.</strong>
+
+      <br><br>
+
+      Please check your internet connection and try again.
+      `,
+      "ai"
+    );
 
   }
-);
+
+});
 
 
-// Suggested questions
 document
   .querySelectorAll(".suggestion")
   .forEach((button) => {
 
-    button.addEventListener(
-      "click",
-      () => {
+    button.addEventListener("click", () => {
 
-        userQuestion.value =
-          button.textContent.trim();
+      userQuestion.value =
+        button.textContent.trim();
 
-        chatForm.requestSubmit();
+      chatForm.requestSubmit();
 
-      }
-    );
+    });
 
   });
