@@ -5,21 +5,41 @@ const chatMessages = document.getElementById("chatMessages");
 const SUPABASE_FUNCTION_URL =
   "https://gqdclkxaxukvswiozgun.supabase.co/functions/v1/quick-service";
 
+// Use your Supabase Publishable Key
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_-p2KVgY-tSZSou03lrL_og_v5amaKp8";
+
+
+function escapeHTML(text) {
+  const div = document.createElement("div");
+  div.textContent = text;
+  return div.innerHTML;
+}
+
 
 function formatAIResponse(text) {
 
-  return text
-    // Bold
-    .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+  let formatted = escapeHTML(text);
 
-    // Bullet points
-    .replace(/^\* (.*)$/gm, "<li>$1</li>")
+  // Bold Markdown: **text**
+  formatted = formatted.replace(
+    /\*\*(.*?)\*\*/g,
+    "<strong>$1</strong>"
+  );
 
-    // Numbered lists
-    .replace(/^(\d+)\. \*\*(.*?)\*\*:?\s*/gm, "<p><strong>$1. $2</strong></p>")
+  // Italic Markdown: *text*
+  formatted = formatted.replace(
+    /\*(.*?)\*/g,
+    "<em>$1</em>"
+  );
 
-    // Line breaks
-    .replace(/\n/g, "<br>");
+  // Line breaks
+  formatted = formatted.replace(
+    /\n/g,
+    "<br>"
+  );
+
+  return formatted;
 }
 
 
@@ -27,7 +47,9 @@ function addMessage(text, sender) {
 
   const message = document.createElement("div");
 
-  message.className = `chat-message ${sender}`;
+  message.className =
+    `chat-message ${sender}`;
+
 
   if (sender === "ai") {
 
@@ -43,11 +65,12 @@ function addMessage(text, sender) {
 
     message.innerHTML = `
       <div class="chat-bubble">
-        ${text}
+        ${escapeHTML(text)}
       </div>
     `;
 
   }
+
 
   chatMessages.appendChild(message);
 
@@ -58,11 +81,15 @@ function addMessage(text, sender) {
 
 function addThinkingMessage() {
 
-  const message = document.createElement("div");
+  const message =
+    document.createElement("div");
 
-  message.className = "chat-message ai thinking-message";
+  message.className =
+    "chat-message ai";
 
-  message.id = "thinkingMessage";
+  message.id =
+    "thinkingMessage";
+
 
   message.innerHTML = `
     <div class="chat-avatar">🤖</div>
@@ -71,6 +98,7 @@ function addThinkingMessage() {
       🌾 FarmPath AI is thinking...
     </div>
   `;
+
 
   chatMessages.appendChild(message);
 
@@ -82,144 +110,181 @@ function addThinkingMessage() {
 function removeThinkingMessage() {
 
   const thinkingMessage =
-    document.getElementById("thinkingMessage");
+    document.getElementById(
+      "thinkingMessage"
+    );
 
   if (thinkingMessage) {
+
     thinkingMessage.remove();
+
   }
 
 }
 
 
-chatForm.addEventListener("submit", async function (event) {
+chatForm.addEventListener(
+  "submit",
+  async function (event) {
 
-  event.preventDefault();
-
-  const question =
-    userQuestion.value.trim();
-
-  if (!question) {
-    return;
-  }
+    event.preventDefault();
 
 
-  // Show farmer's question
-  addMessage(question, "user");
-
-  // Clear input
-  userQuestion.value = "";
-
-  // Show thinking message
-  addThinkingMessage();
+    const question =
+      userQuestion.value.trim();
 
 
-  try {
+    if (!question) {
+      return;
+    }
 
-    const response = await fetch(
-      SUPABASE_FUNCTION_URL,
-      {
-        method: "POST",
 
-        headers: {
-          "Content-Type": "application/json",
-        },
+    // Show user question
+    addMessage(
+      question,
+      "user"
+    );
 
-        body: JSON.stringify({
-          question: question,
 
-          farm: {}
-        }),
+    userQuestion.value = "";
+
+
+    // Show loading message
+    addThinkingMessage();
+
+
+    try {
+
+      const response =
+        await fetch(
+          SUPABASE_FUNCTION_URL,
+          {
+
+            method: "POST",
+
+            headers: {
+
+              "Content-Type":
+                "application/json",
+
+              "apikey":
+                SUPABASE_PUBLISHABLE_KEY,
+
+              "Authorization":
+                `Bearer ${SUPABASE_PUBLISHABLE_KEY}`
+
+            },
+
+            body:
+              JSON.stringify({
+
+                question: question,
+
+                farm: {}
+
+              })
+
+          }
+        );
+
+
+      const data =
+        await response.json();
+
+
+      console.log(
+        "FarmPath AI response:",
+        data
+      );
+
+
+      removeThinkingMessage();
+
+
+      if (!response.ok) {
+
+        console.error(
+          "FarmPath AI error:",
+          data
+        );
+
+
+        addMessage(
+          `⚠️ FarmPath AI connection error
+
+${data.details ||
+data.error ||
+"Please try again."}`,
+          "ai"
+        );
+
+
+        return;
 
       }
-    );
 
 
-    const data =
-      await response.json();
+      if (!data.answer) {
+
+        addMessage(
+          `⚠️ FarmPath AI connection error
+
+Gemini returned no answer.`,
+          "ai"
+        );
 
 
-    removeThinkingMessage();
+        return;
+
+      }
 
 
-    if (!response.ok) {
-
+      // Show AI answer
       addMessage(
-        `
-        <strong>⚠️ FarmPath AI connection error</strong>
-
-        <br><br>
-
-        ${data.details || data.error || "Please try again."}
-        `,
+        data.answer,
         "ai"
       );
 
-      return;
-    }
+
+    } catch (error) {
+
+      console.error(
+        "FarmPath AI error:",
+        error
+      );
 
 
-    if (!data.answer) {
+      removeThinkingMessage();
+
 
       addMessage(
-        `
-        <strong>⚠️ FarmPath AI connection error</strong>
+        `⚠️ I couldn't connect to FarmPath AI.
 
-        <br><br>
-
-        Gemini returned no answer.
-        `,
+Please check your internet connection and try again.`,
         "ai"
       );
 
-      return;
     }
-
-
-    // Show AI answer
-    addMessage(
-      data.answer,
-      "ai"
-    );
-
-
-  } catch (error) {
-
-    console.error(
-      "FarmPath AI error:",
-      error
-    );
-
-
-    removeThinkingMessage();
-
-
-    addMessage(
-      `
-      <strong>⚠️ I couldn't connect to FarmPath AI right now.</strong>
-
-      <br><br>
-
-      Please check your internet connection and try again.
-      `,
-      "ai"
-    );
 
   }
-
-});
+);
 
 
 document
   .querySelectorAll(".suggestion")
   .forEach((button) => {
 
-    button.addEventListener("click", () => {
+    button.addEventListener(
+      "click",
+      () => {
 
-      userQuestion.value =
-        button.textContent.trim();
+        userQuestion.value =
+          button.textContent.trim();
 
-      chatForm.requestSubmit();
 
-    });
+        chatForm.requestSubmit();
+
+      }
+    );
 
   });
