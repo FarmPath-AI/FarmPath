@@ -1,5 +1,5 @@
-html
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -20,292 +20,842 @@ html
 
 <body class="app-page">
 
+  <!-- SIDEBAR -->
+
   <aside class="sidebar">
 
-    <a class="brand" href="dashboard.html">
-      <b>🌾 Farm<span>Path</span></b>
-    </a>
+```
+<a class="brand" href="dashboard.html">
+  <b>🌾 Farm<span>Path</span></b>
+</a>
 
-    <div class="side-label">
-      FARMER WORKSPACE
-    </div>
+<div class="side-label">FARMER WORKSPACE</div>
 
-    <a class="side" href="dashboard.html">
-      ⌂ <span>Today</span>
-    </a>
+<a class="side" href="dashboard.html">
+  ⌂ <span>Today</span>
+</a>
 
-    <a class="side" href="assistant.html">
-      ✦ <span>AI Assistant</span>
-    </a>
+<a class="side" href="assistant.html">
+  ✦ <span>AI Assistant</span>
+</a>
 
-    <a class="side" href="farms.html">
-      🌾 <span>My Farms</span>
-    </a>
+<a class="side" href="farms.html">
+  🌾 <span>My Farms</span>
+</a>
 
-    <a class="side" href="calendar.html">
-      📅 <span>Farm Calendar</span>
-    </a>
+<a class="side" href="calendar.html">
+  📅 <span>Farm Calendar</span>
+</a>
 
-    <a class="side active" href="crop-doctor.html">
-      📷 <span>Crop Doctor</span>
-    </a>
+<a class="side active" href="crop-doctor.html">
+  📷 <span>Crop Doctor</span>
+</a>
 
-    <a class="side" href="finances.html">
-      💰 <span>Money Manager</span>
-    </a>
+<a class="side" href="finances.html">
+  💰 <span>Money Manager</span>
+</a>
 
-    <div class="side-bottom">
-      <button id="logoutBtn" type="button">
-        ↪ Log out
-      </button>
-    </div>
+<div class="side-bottom">
+  <button id="logoutBtn">↪ Log out</button>
+</div>
+```
 
   </aside>
 
+  <!-- MAIN -->
 
   <main class="app-main">
 
-    <header class="app-header">
+```
+<header class="app-header">
 
-      <button
-        class="mobile-menu"
-        id="menuBtn"
-        type="button"
+  <button class="mobile-menu" id="menuBtn">
+    ☰
+  </button>
+
+  <div>
+    <p>AI-READY WORKFLOW</p>
+    <h1>FarmPath Crop Doctor</h1>
+  </div>
+
+</header>
+
+
+<!-- DOCTOR AREA -->
+<section class="doctor-layout">
+
+  <!-- UPLOAD CARD -->
+  <div class="doctor-card">
+
+    <div class="doctor-icon">
+      📷
+    </div>
+
+    <h2>Show us what's wrong</h2>
+
+    <p>
+      Upload a clear image of the affected part of the crop
+      and describe what you are seeing.
+    </p>
+
+
+    <!-- IMAGE UPLOAD -->
+    <label class="upload-zone" id="uploadZone">
+
+      📸
+
+      <b>Choose a plant photo</b>
+
+      <small>
+        Leaves, stems, fruit or the affected area
+      </small>
+
+      <input
+        id="plantImage"
+        type="file"
+        accept="image/*"
       >
-        ☰
-      </button>
 
-      <div>
-        <p>AI-READY WORKFLOW</p>
-        <h1>FarmPath Crop Doctor</h1>
-      </div>
-
-    </header>
+    </label>
 
 
-    <section class="doctor-layout">
-
-      <div class="doctor-card">
-
-        <div class="doctor-icon">
-          📷
-        </div>
-
-        <h2>
-          Show us what's wrong
-        </h2>
-
-        <p>
-          Upload a clear image of the affected part of your
-          crop and describe what you are seeing.
-        </p>
+    <!-- IMAGE PREVIEW -->
+    <img
+      id="preview"
+      class="image-preview hidden"
+      alt="Selected plant image"
+    >
 
 
-        <!-- =================================================
-             IMAGE UPLOAD
-        ================================================== -->
+    <!-- SYMPTOMS -->
+    <label>
 
-        <div class="upload-zone" id="uploadZone">
+      What do you notice?
 
-          <div style="font-size: 2.5rem; margin-bottom: 10px;">
-            📸
-          </div>
+      <textarea
+        id="symptoms"
+        placeholder="Example: holes in leaves, yellow patches, wilting..."
+      ></textarea>
 
-          <b>
-            Choose a plant photo
-          </b>
-
-          <small>
-            Leaves, stems, fruit or the affected area
-          </small>
-
-          <label
-            for="plantImage"
-            class="btn btn-dark"
-            style="
-              display:inline-block;
-              margin-top:18px;
-              cursor:pointer;
-            "
-          >
-            Select Image
-          </label>
-
-          <input
-            id="plantImage"
-            name="plantImage"
-            type="file"
-            accept="image/*"
-            style="
-              position:absolute;
-              width:1px;
-              height:1px;
-              opacity:0;
-              pointer-events:none;
-            "
-          >
-
-          <div
-            id="fileName"
-            style="
-              margin-top:12px;
-              font-size:0.85rem;
-              opacity:0.7;
-            "
-          >
-            No image selected
-          </div>
-
-        </div>
+    </label>
 
 
-        <!-- IMAGE PREVIEW -->
+    <!-- ANALYZE BUTTON -->
+    <button
+      id="analyzeBtn"
+      class="btn btn-dark full"
+      type="button"
+    >
+      Analyze Observation →
+    </button>
 
-        <img
-          id="preview"
-          class="image-preview hidden"
-          alt="Selected crop image"
-          style="
-            display:block;
-            max-width:100%;
-            max-height:350px;
-            object-fit:contain;
-            margin:20px auto;
-            border-radius:16px;
-          "
-        >
+  </div>
 
 
-        <!-- SYMPTOMS -->
+  <!-- INFORMATION CARD -->
+  <aside class="doctor-info">
 
-        <label for="symptoms">
+    <span class="pill">
+      SAFETY FIRST
+    </span>
 
-          What do you notice?
+    <h3>
+      FarmPath should never guess when confidence is too low.
+    </h3>
 
-          <textarea
-            id="symptoms"
-            name="symptoms"
-            rows="5"
-            placeholder="Example: holes in leaves, yellow patches, wilting, brown spots..."
-          ></textarea>
+    <p>
+      Upload a clear crop image and describe the symptoms.
+      FarmPath AI will examine the observation and provide
+      practical guidance.
+    </p>
 
-        </label>
+    <ul>
+      <li>✓ Possible issue</li>
+      <li>✓ Confidence level</li>
+      <li>✓ Severity</li>
+      <li>✓ Immediate next step</li>
+    </ul>
 
+  </aside>
 
-        <!-- ANALYZE -->
-
-        <button
-          id="analyzeBtn"
-          class="btn btn-dark full"
-          type="button"
-        >
-          Analyze Observation →
-        </button>
-
-      </div>
-
-
-      <!-- INFORMATION -->
-
-      <aside class="doctor-info">
-
-        <span class="pill">
-          AI CROP DOCTOR
-        </span>
-
-        <h3>
-          Understand what may be affecting your crop.
-        </h3>
-
-        <p>
-          FarmPath AI examines the uploaded image and your
-          description to identify possible crop problems and
-          recommend practical next steps.
-        </p>
-
-        <ul>
-          <li>✓ Possible issue</li>
-          <li>✓ Confidence level</li>
-          <li>✓ Severity</li>
-          <li>✓ What the AI sees</li>
-          <li>✓ Recommended next steps</li>
-          <li>✓ Safety guidance</li>
-        </ul>
-
-        <div class="doctor-disclaimer">
-
-          <strong>Safety first</strong>
-
-          <p>
-            AI observations are not a confirmed agricultural
-            diagnosis. Serious, spreading or uncertain crop
-            problems should be checked by a qualified
-            agricultural extension officer or agronomist.
-          </p>
-
-        </div>
-
-      </aside>
-
-    </section>
+</section>
 
 
-    <!-- AI RESULT -->
-
-    <section
-      id="doctorResult"
-      class="result-card hidden"
-      aria-live="polite"
-    ></section>
+<!-- RESULT -->
+<section
+  id="doctorResult"
+  class="result-card hidden"
+></section>
+```
 
   </main>
 
+  <!-- APP JS ONLY -->
 
   <script src="app.js"></script>
-  <script src="crop-doctor.js"></script>
+
+  <!-- CROP DOCTOR SCRIPT -->
 
   <script>
-    /*
-     * Simple upload handler.
-     * This is intentionally in the HTML so the image picker
-     * works even if crop-doctor.js has another problem.
-     */
 
     document.addEventListener("DOMContentLoaded", function () {
 
-      const input = document.getElementById("plantImage");
-      const preview = document.getElementById("preview");
-      const fileName = document.getElementById("fileName");
+      console.log("FarmPath Crop Doctor loaded");
 
-      if (!input) {
-        console.error("plantImage input not found");
+
+      const plantImage =
+        document.getElementById("plantImage");
+
+      const preview =
+        document.getElementById("preview");
+
+      const symptoms =
+        document.getElementById("symptoms");
+
+      const analyzeBtn =
+        document.getElementById("analyzeBtn");
+
+      const doctorResult =
+        document.getElementById("doctorResult");
+
+
+      const SUPABASE_FUNCTION_URL =
+        "https://gqdclkxaxukvswiozgun.supabase.co/functions/v1/quick-service";
+
+
+      let selectedImage = null;
+
+
+      /* --------------------------------
+         CHECK ELEMENTS
+      -------------------------------- */
+
+      if (
+        !plantImage ||
+        !preview ||
+        !symptoms ||
+        !analyzeBtn ||
+        !doctorResult
+      ) {
+
+        console.error(
+          "FarmPath Crop Doctor: Required element missing."
+        );
+
         return;
       }
 
-      input.addEventListener("change", function () {
 
-        const file = input.files[0];
+      /* --------------------------------
+         IMAGE SELECTION
+      -------------------------------- */
 
-        if (!file) {
-          fileName.textContent = "No image selected";
-          preview.classList.add("hidden");
-          return;
+      plantImage.addEventListener(
+        "change",
+        function () {
+
+          const file =
+            plantImage.files &&
+            plantImage.files[0];
+
+
+          console.log(
+            "Selected image:",
+            file ? file.name : "None"
+          );
+
+
+          if (!file) {
+
+            selectedImage = null;
+
+            preview.src = "";
+
+            preview.classList.add("hidden");
+
+            return;
+          }
+
+
+          if (!file.type.startsWith("image/")) {
+
+            alert(
+              "Please choose a valid plant image."
+            );
+
+            plantImage.value = "";
+
+            selectedImage = null;
+
+            return;
+          }
+
+
+          selectedImage = file;
+
+
+          const imageURL =
+            URL.createObjectURL(file);
+
+
+          preview.src = imageURL;
+
+          preview.classList.remove("hidden");
+
         }
+      );
 
-        console.log("Selected image:", file.name);
 
-        fileName.textContent =
-          "Selected: " + file.name;
+      /* --------------------------------
+         COMPRESS IMAGE
+      -------------------------------- */
 
-        const imageURL =
-          URL.createObjectURL(file);
+      function compressImage(file) {
 
-        preview.src = imageURL;
+        return new Promise(
+          function (resolve, reject) {
 
-        preview.classList.remove("hidden");
-      });
+            const reader =
+              new FileReader();
+
+
+            reader.onload = function () {
+
+              const img =
+                new Image();
+
+
+              img.onload = function () {
+
+                const maxSize = 1200;
+
+                let width = img.width;
+
+                let height = img.height;
+
+
+                if (
+                  width > maxSize ||
+                  height > maxSize
+                ) {
+
+                  if (width > height) {
+
+                    height =
+                      Math.round(
+                        (height * maxSize) /
+                        width
+                      );
+
+                    width = maxSize;
+
+                  } else {
+
+                    width =
+                      Math.round(
+                        (width * maxSize) /
+                        height
+                      );
+
+                    height = maxSize;
+
+                  }
+
+                }
+
+
+                const canvas =
+                  document.createElement(
+                    "canvas"
+                  );
+
+
+                canvas.width = width;
+
+                canvas.height = height;
+
+
+                const ctx =
+                  canvas.getContext("2d");
+
+
+                if (!ctx) {
+
+                  reject(
+                    new Error(
+                      "Could not process image."
+                    )
+                  );
+
+                  return;
+                }
+
+
+                ctx.drawImage(
+                  img,
+                  0,
+                  0,
+                  width,
+                  height
+                );
+
+
+                const compressedImage =
+                  canvas.toDataURL(
+                    "image/jpeg",
+                    0.82
+                  );
+
+
+                resolve(compressedImage);
+
+              };
+
+
+              img.onerror = function () {
+
+                reject(
+                  new Error(
+                    "Could not read the image."
+                  )
+                );
+
+              };
+
+
+              img.src = reader.result;
+
+            };
+
+
+            reader.onerror = function () {
+
+              reject(
+                new Error(
+                  "Could not load the image."
+                )
+              );
+
+            };
+
+
+            reader.readAsDataURL(file);
+
+          }
+        );
+
+      }
+
+
+      /* --------------------------------
+         HTML ESCAPE
+      -------------------------------- */
+
+      function escapeHTML(text) {
+
+        const div =
+          document.createElement("div");
+
+        div.textContent =
+          String(text);
+
+        return div.innerHTML;
+
+      }
+
+
+      /* --------------------------------
+         FORMAT AI RESPONSE
+      -------------------------------- */
+
+      function formatAIResponse(text) {
+
+        let formatted =
+          escapeHTML(text);
+
+
+        formatted =
+          formatted.replace(
+            /\*\*(.*?)\*\*/g,
+            "<strong>$1</strong>"
+          );
+
+
+        formatted =
+          formatted.replace(
+            /\*(.*?)\*/g,
+            "<em>$1</em>"
+          );
+
+
+        formatted =
+          formatted.replace(
+            /^(\d+)\.\s/gm,
+            "<strong>$1.</strong> "
+          );
+
+
+        formatted =
+          formatted.replace(
+            /\n/g,
+            "<br>"
+          );
+
+
+        return formatted;
+
+      }
+
+
+      /* --------------------------------
+         ANALYZE
+      -------------------------------- */
+
+      analyzeBtn.addEventListener(
+        "click",
+        async function (event) {
+
+          event.preventDefault();
+
+
+          console.log(
+            "Analyze button clicked"
+          );
+
+
+          const imageFile =
+            selectedImage ||
+            (
+              plantImage.files &&
+              plantImage.files[0]
+            );
+
+
+          const symptomText =
+            symptoms.value.trim();
+
+
+          console.log(
+            "Image:",
+            imageFile
+              ? imageFile.name
+              : "None"
+          );
+
+
+          console.log(
+            "Symptoms:",
+            symptomText
+          );
+
+
+          /* -----------------------------
+             VALIDATION
+          ----------------------------- */
+
+          if (!imageFile && !symptomText) {
+
+            alert(
+              "Please upload a photo or describe what you are seeing."
+            );
+
+            return;
+          }
+
+
+          /* -----------------------------
+             SHOW LOADING
+          ----------------------------- */
+
+          analyzeBtn.disabled = true;
+
+          analyzeBtn.textContent =
+            "Analyzing your crop...";
+
+
+          doctorResult.classList.remove(
+            "hidden"
+          );
+
+
+          doctorResult.innerHTML = `
+
+            <span class="pill">
+              CROP DOCTOR
+            </span>
+
+            <h2>
+              Analyzing your crop...
+            </h2>
+
+            <p>
+              FarmPath AI is examining the observation.
+              This may take a few seconds.
+            </p>
+
+            <div class="result-grid">
+
+              <div>
+                <small>Status</small>
+                <b>Analyzing</b>
+              </div>
+
+              <div>
+                <small>Image</small>
+                <b>
+                  ${
+                    imageFile
+                      ? "Uploaded"
+                      : "Not provided"
+                  }
+                </b>
+              </div>
+
+              <div>
+                <small>Symptoms</small>
+                <b>
+                  ${
+                    symptomText
+                      ? "Provided"
+                      : "Not provided"
+                  }
+                </b>
+              </div>
+
+            </div>
+
+          `;
+
+
+          doctorResult.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+          });
+
+
+          try {
+
+            /* -------------------------
+               CONVERT IMAGE
+            ------------------------- */
+
+            let imageData = null;
+
+
+            if (imageFile) {
+
+              console.log(
+                "Compressing image..."
+              );
+
+
+              imageData =
+                await compressImage(
+                  imageFile
+                );
+
+
+              console.log(
+                "Image compressed."
+              );
+
+            }
+
+
+            /* -------------------------
+               SEND TO SUPABASE
+            ------------------------- */
+
+            console.log(
+              "Sending request to FarmPath AI..."
+            );
+
+
+            const response =
+              await fetch(
+                SUPABASE_FUNCTION_URL,
+                {
+                  method: "POST",
+
+                  headers: {
+                    "Content-Type":
+                      "application/json"
+                  },
+
+                  body: JSON.stringify({
+                    image: imageData,
+                    symptoms: symptomText,
+                    crop: "Not specified"
+                  })
+                }
+              );
+
+
+            console.log(
+              "Supabase status:",
+              response.status
+            );
+
+
+            const rawText =
+              await response.text();
+
+
+            console.log(
+              "Supabase response:",
+              rawText
+            );
+
+
+            let data;
+
+
+            try {
+
+              data =
+                JSON.parse(rawText);
+
+            } catch (jsonError) {
+
+              throw new Error(
+                "The AI service returned an invalid response."
+              );
+
+            }
+
+
+            /* -------------------------
+               API ERROR
+            ------------------------- */
+
+            if (!response.ok) {
+
+              throw new Error(
+                data.details ||
+                data.error ||
+                (
+                  "AI service returned HTTP " +
+                  response.status
+                )
+              );
+
+            }
+
+
+            /* -------------------------
+               EMPTY RESPONSE
+            ------------------------- */
+
+            if (!data.answer) {
+
+              throw new Error(
+                "Crop Doctor returned no analysis."
+              );
+
+            }
+
+
+            /* -------------------------
+               SUCCESS
+            ------------------------- */
+
+            doctorResult.innerHTML = `
+
+              <span class="pill">
+                AI CROP ANALYSIS
+              </span>
+
+              <h2>
+                FarmPath Crop Doctor
+              </h2>
+
+              <div class="ai-analysis">
+
+                ${formatAIResponse(
+                  data.answer
+                )}
+
+              </div>
+
+              <div class="doctor-disclaimer">
+
+                <strong>Important:</strong>
+
+                This is an AI-based crop observation,
+                not a confirmed agricultural diagnosis.
+                If the problem is serious, spreading quickly,
+                or unclear, contact a qualified agricultural
+                extension officer or agronomist before
+                applying treatment.
+
+              </div>
+
+            `;
+
+
+            doctorResult.scrollIntoView({
+              behavior: "smooth",
+              block: "start"
+            });
+
+
+          } catch (error) {
+
+            console.error(
+              "Crop Doctor error:",
+              error
+            );
+
+
+            doctorResult.innerHTML = `
+
+              <span class="pill">
+                CROP DOCTOR
+              </span>
+
+              <h2>
+                We couldn't analyze the crop
+              </h2>
+
+              <p>
+                ${escapeHTML(
+                  error.message ||
+                  "Something went wrong. Please try again."
+                )}
+              </p>
+
+              <div class="doctor-disclaimer">
+
+                Make sure your image is clear
+                and try again.
+
+                If the problem continues,
+                the FarmPath AI service may need
+                attention.
+
+              </div>
+
+            `;
+
+          } finally {
+
+            analyzeBtn.disabled = false;
+
+            analyzeBtn.textContent =
+              "Analyze Observation →";
+
+          }
+
+        }
+      );
+
+
+      console.log(
+        "FarmPath Crop Doctor is ready."
+      );
 
     });
+
   </script>
 
 </body>
