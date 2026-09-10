@@ -20,10 +20,6 @@
 
 <body class="app-page">
 
-  <!-- =========================================================
-       SIDEBAR
-  ========================================================== -->
-
   <aside class="sidebar">
 
     <a class="brand" href="dashboard.html">
@@ -67,13 +63,7 @@
   </aside>
 
 
-  <!-- =========================================================
-       MAIN
-  ========================================================== -->
-
   <main class="app-main">
-
-    <!-- HEADER -->
 
     <header class="app-header">
 
@@ -81,30 +71,19 @@
         class="mobile-menu"
         id="menuBtn"
         type="button"
-        aria-label="Open menu"
       >
         ☰
       </button>
 
       <div>
         <p>AI-READY WORKFLOW</p>
-
-        <h1>
-          FarmPath Crop Doctor
-        </h1>
+        <h1>FarmPath Crop Doctor</h1>
       </div>
 
     </header>
 
 
-    <!-- =======================================================
-         CROP DOCTOR
-    ======================================================== -->
-
     <section class="doctor-layout">
-
-
-      <!-- LEFT CARD -->
 
       <div class="doctor-card">
 
@@ -122,17 +101,15 @@
         </p>
 
 
-        <!-- IMAGE UPLOAD -->
+        <!-- =================================================
+             IMAGE UPLOAD
+        ================================================== -->
 
-        <label
-          class="upload-zone"
-          id="uploadZone"
-          for="plantImage"
-        >
+        <div class="upload-zone" id="uploadZone">
 
-          <span style="font-size: 2rem;">
+          <div style="font-size: 2.5rem; margin-bottom: 10px;">
             📸
-          </span>
+          </div>
 
           <b>
             Choose a plant photo
@@ -142,14 +119,44 @@
             Leaves, stems, fruit or the affected area
           </small>
 
+          <label
+            for="plantImage"
+            class="btn btn-dark"
+            style="
+              display:inline-block;
+              margin-top:18px;
+              cursor:pointer;
+            "
+          >
+            Select Image
+          </label>
+
           <input
             id="plantImage"
             name="plantImage"
             type="file"
-            accept="image/jpeg,image/png,image/webp,image/*"
+            accept="image/*"
+            style="
+              position:absolute;
+              width:1px;
+              height:1px;
+              opacity:0;
+              pointer-events:none;
+            "
           >
 
-        </label>
+          <div
+            id="fileName"
+            style="
+              margin-top:12px;
+              font-size:0.85rem;
+              opacity:0.7;
+            "
+          >
+            No image selected
+          </div>
+
+        </div>
 
 
         <!-- IMAGE PREVIEW -->
@@ -157,7 +164,15 @@
         <img
           id="preview"
           class="image-preview hidden"
-          alt="Selected crop preview"
+          alt="Selected crop image"
+          style="
+            display:block;
+            max-width:100%;
+            max-height:350px;
+            object-fit:contain;
+            margin:20px auto;
+            border-radius:16px;
+          "
         >
 
 
@@ -177,7 +192,7 @@
         </label>
 
 
-        <!-- ANALYZE BUTTON -->
+        <!-- ANALYZE -->
 
         <button
           id="analyzeBtn"
@@ -190,9 +205,7 @@
       </div>
 
 
-      <!-- =====================================================
-           INFORMATION CARD
-      ====================================================== -->
+      <!-- INFORMATION -->
 
       <aside class="doctor-info">
 
@@ -205,9 +218,9 @@
         </h3>
 
         <p>
-          FarmPath AI examines the uploaded image and the
-          farmer's description to identify possible crop
-          problems and recommend practical next steps.
+          FarmPath AI examines the uploaded image and your
+          description to identify possible crop problems and
+          recommend practical next steps.
         </p>
 
         <ul>
@@ -237,9 +250,7 @@
     </section>
 
 
-    <!-- =======================================================
-         AI RESULT
-    ======================================================== -->
+    <!-- AI RESULT -->
 
     <section
       id="doctorResult"
@@ -250,13 +261,52 @@
   </main>
 
 
-  <!-- =========================================================
-       SCRIPTS
-  ========================================================== -->
-
   <script src="app.js"></script>
-
   <script src="crop-doctor.js"></script>
+
+  <script>
+    /*
+     * Simple upload handler.
+     * This is intentionally in the HTML so the image picker
+     * works even if crop-doctor.js has another problem.
+     */
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+      const input = document.getElementById("plantImage");
+      const preview = document.getElementById("preview");
+      const fileName = document.getElementById("fileName");
+
+      if (!input) {
+        console.error("plantImage input not found");
+        return;
+      }
+
+      input.addEventListener("change", function () {
+
+        const file = input.files[0];
+
+        if (!file) {
+          fileName.textContent = "No image selected";
+          preview.classList.add("hidden");
+          return;
+        }
+
+        console.log("Selected image:", file.name);
+
+        fileName.textContent =
+          "Selected: " + file.name;
+
+        const imageURL =
+          URL.createObjectURL(file);
+
+        preview.src = imageURL;
+
+        preview.classList.remove("hidden");
+      });
+
+    });
+  </script>
 
 </body>
 </html>
